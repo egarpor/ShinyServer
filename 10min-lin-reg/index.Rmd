@@ -1,0 +1,194 @@
+---
+title: "A 10 minute-ish introduction to linear regression"
+author: "Eduardo García-Portugués"
+date: "24 Feb 2016"
+output: html_document
+runtime: shiny
+---
+
+Companion script for *"A 10 minute-ish introduction to linear regression"* aimed to illustrate the most basic concepts of simple linear regression.
+
+### Motivating example
+
+Suppose we have a production line where we measured the time (in minutes) required to produce a number of solicited items. There are two random variables: `y` = "time required to produce an order" and `x` = "number of items in the order". We want to explain/predict `y` from `x` from a linear model.
+
+```{r}
+
+# Production time
+y <- c(175, 189, 344, 88, 114, 338, 271, 173, 284, 277, 337, 58, 146, 277, 123, 227, 63, 337, 146, 68)
+
+# Number of units in the order
+x <- c(195, 215, 243, 162, 185, 231, 234, 166, 253, 196, 220, 168, 207, 225, 169, 215, 147, 230, 208, 172)
+
+# Data scatterplot (pch = 16 for filled points)
+plot(y ~ x, pch = 16)
+
+```
+
+### The `lm` function
+
+The linear fit in `R` is done by the `lm` function and the formula `y ~ x`, used to denote that we are interested in regressing `y` over `x`. 
+
+```{r}
+
+# Fit a linear model y = beta0 + beta1 * x
+reg <- lm(y ~ x)
+
+# The result is a list with several objects
+names(reg)
+
+# The fitted coefficients beta0 (intercept) and beta1 (slope)
+reg$coefficients
+
+# The regression line with the minimized distances
+plot(y ~ x, pch = 16)
+abline(reg, col = 2)
+segments(x0 = x, y0 = y, x1 = x, y1 = reg$fitted.values)
+
+```
+
+### The least squares estimate
+
+We can check and visualize that `reg$coefficients` indeed contains the least squares estimates and that they minimize the Residual Sum of Squares (RSS).
+
+```{r}
+
+# Create the design matrix
+X <- cbind(1, x)
+
+# The analytical solution
+betahat <- solve(t(X) %*% X) %*% t(X) %*% y
+betahat
+
+# Minimal RSS
+sum((y - X %*% betahat)^2)
+```
+
+You can try to get a better RSS. Good luck! :)
+
+```{r, echo = FALSE}
+
+# Define input
+inputPanel(
+  
+  sliderInput("beta0", label = "Intercept:",
+              min = -500, max = 300, value = reg$coefficients[1] + 600, step = 5),
+  sliderInput("beta1", label = "Slope:",
+              min = -3, max = 8, value = 0, step = 0.01)
+  
+)
+
+# Create plot
+renderPlot({
+  plot(y ~ x, main = paste("RSS:", round(sum((input$beta0 + input$beta1 * x - y)^2), 1)), pch = 16, xlim = c(100, 300), ylim = c(0, 400))
+  abline(a = input$beta0, b = input$beta1, col = 2)
+  segments(x0 = x, y0 = y, x1 = x, y1 = input$beta0 + input$beta1 * x)
+})
+  
+```
+
+```{r, echo = FALSE}
+# 
+#  ### Define a line
+#   data_line <- data.frame(
+#     x_rng = c(0, 1), 
+#     y_rng = c(reg$coefficients[1], reg$coefficients[1] + reg$coefficients[2])
+#   )     
+#   
+# p <- ggvis(data.frame("x" = x, "y" = y), x = ~x, y = ~y)
+# layer_points(p) %>%
+# layer_model_predictions(model = "lm", stroke := "red") %>%
+#     layer_paths(x = ~x_rng, y = ~y_rng, stroke := "blue", data = data_line) %>% 
+#   scale_numeric("x", domain = c(140, 270), nice = FALSE, clamp = TRUE) %>% 
+#   scale_numeric("y", domain = c(0, 400), nice = FALSE, clamp = TRUE)
+# 
+```
+
+
+### Summary of the model
+
+The `summary` function applied to a `lm` object gives the fitted coefficients and its significances ("Pr(>|t|)"), the $R^2$ ("Multiple R-squared") and the fitted error variance ("Residual standard error").
+ 
+```{r}
+
+# Summary of the fit
+summary(reg)
+
+```
+
+### Prediction
+
+Prediction of a new observation can be done via the function `predict`, which also provides conficence intervals. The `newdata` argument of `predict` needs a `data.frame`.
+
+```{r}
+
+# Point in which we want a prediction for y
+newx <- data.frame(x = 200)
+
+# Prediction with 95% confidence interval
+predict(reg, newdata = newx, interval = "prediction", level = 0.95)
+
+# The same prediction
+reg$coefficients %*% c(1, 200)
+
+```
+
+### Some words of caution with $R^2$
+
+$R^2$ does not measure the correctness of a linear model but the **usefulness assuming the model is correct**. 
+
+```{r}
+
+# Fixed design
+xf <- seq(0, 1, l = 50)
+
+# Errors with different variance
+set.seed(123456)
+eps1 <- rnorm(50, sd = 0.1)
+eps2 <- rnorm(50, sd = 1)
+
+# Responses generated following a linear model
+y1 <- 1 + 2 * xf + eps1
+y2 <- 1 + 2 * xf + eps2
+
+# Fits
+reg1 <- lm(y1 ~ xf)
+reg2 <- lm(y2 ~ xf)
+
+# R^2 depends on the 
+summary(reg1)
+summary(reg2)
+
+# Plot
+par(mfrow = c(1, 2))
+plot(y1 ~ xf, pch = 16, ylim = c(-1, 5))
+abline(a = 1, b = 2, col = 2)
+abline(a = reg1$coefficients[1], b = reg1$coefficients[2], col = 3)
+plot(y2 ~ xf, pch = 16, ylim = c(-1, 5))
+abline(a = 1, b = 2, col = 2)
+abline(a = reg2$coefficients[1], b = reg2$coefficients[2], col = 3)
+
+```
+
+A large $R^2$ means *nothing* if the **assumptions of the model do not hold**.
+
+```{r}
+
+# Create data that: 
+# 1) does NOT follow a linear model
+# 2) the error is heteroskedastic
+xf <- seq(0.15, 1, l = 100)
+y3 <- 0.2 * sin(2 * pi * xf) + rnorm(n = 100, sd = 0.1 * xf^2)
+
+# Great R^2!?
+reg3 <- lm(y3 ~ xf)
+summary(reg3)
+
+# But predicting is obviously problematic
+plot(y3 ~ xf, pch = 16)
+lines(0.2 * sin(2 * pi * xf) ~ xf, col = 2)
+abline(reg3, col = 3)
+
+```
+
+
