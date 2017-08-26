@@ -10,6 +10,47 @@ library(plot3Drgl)
 # Load data
 load("assumptions3D-TF.RData")
 
+#' @title Project points into a plane
+#'
+#' @description Projects a matrix of points into the plane defined by $n\cdot x=c$.
+#'
+#' @param x matrix of points (observations by rows) of dimension \code{c(n, p)}.
+#' @param coefsPlane normal vector $n$ definying the plane. It has length \code{p}.
+#' @param interceptPlane intercept $c$ of the plane.
+#' @return
+#' A matrix of the same size of \code{x} containing the projected points.
+#' @examples
+#' x <- rbind(c(1, 0, 0), c(1, 1, 1))
+#' projPlane(x = x, coefs = c(1, 0, 0), intercept = 0)
+#' @author Eduardo García-Portugués (\email{edgarcia@est-econ.uc3m.es}).
+#' @export
+projPlane = function(x, coefs, intercept) {
+
+  # Compute a point on the plane (i.e., point %*% coefs = intercept)
+  ind <- which.max(abs(coefs))
+  p <- length(coefs)
+  point <- rep(0, p)
+  point[ind] <- intercept / coefs[ind]
+
+  # Projection
+  if (!is.null(dim(x))) {
+
+    n <- dim(x)[1]
+    point <- matrix(point, nrow = n, ncol = p, byrow = TRUE) # For proper sum of vector and matrix by rows
+    tt <- (point - x) %*% coefs / sum(coefs ^ 2)
+    projx <- x + drop(tt) * matrix(coefs, nrow = n, ncol = p, byrow = TRUE)
+
+  } else{
+
+    tt <- coefs %*% (point - x) / sum(coefs ^ 2)
+    projx <-  x + tt * coefs
+
+  }
+
+  return(projx)
+
+}
+
 # UI for application
 ui <- fluidPage(align = "center",
 
@@ -22,7 +63,7 @@ ui <- fluidPage(align = "center",
 
       selectInput(inputId = "assump", label = "Assumptions satisfied?",
                   choices = c("Yes", "No")),
-      uiOutput("cases")
+      uiOutput(outputId = "cases")
 
     ),
 
@@ -67,9 +108,13 @@ server <- function(input, output) {
 
     # Case
     i <- as.integer(input$case)
+    i <- ifelse(length(i) == 0, 1, i)
     main <- ifelse(input$assump == "Yes", namesTrue[i], namesFalse[i])
 
     # Select data and caption
+    x1 <- x1T[i, ]
+    x2 <- x2T[i, ]
+    y <- yT[i, ]
     if (input$assump == "Yes") {
 
       x1 <- x1T[i, ]
@@ -97,16 +142,21 @@ server <- function(input, output) {
     ylim <- range(x2)
     zlim <- range(c(y, pred))
 
+    # Open plot
+    persp3Drgl(xx1, xx2, median(pred), xlim = xlim, ylim = ylim, zlim = zlim,
+               xlab = "x1", ylab = "x2", zlab = "y", colkey = FALSE,
+               type = "n", ticktype = "detailed", main = main)
+
     # Plot plane
-    persp3Drgl(xx1, xx2, matrix(pred, l, l), xlim = xlim, ylim = ylim, zlim = zlim,
-           xlab = "", ylab = "", zlab = "", main = main, col = "lightblue",
-           border = gray(0.5), alpha = 0.5)
-    mtext3d("x1", edge = 'x')
-    mtext3d("x2", edge = 'y')
-    mtext3d("y", edge = 'z')
+    a <- -mod$coefficients[2]
+    b <- -mod$coefficients[3]
+    c <- 1
+    d <- -mod$coefficients[1]
+    planes3d(a = a, b = b, c = c, d = d, alpha = 0.75, lit = FALSE,
+             col = "lightblue")
 
     # Add data
-    spheres3d(x1, x2, y, radius = 0.02)
+    spheres3d(cbind(x1, x2, y), radius = 0.02)
 
     rglwidget()
 
