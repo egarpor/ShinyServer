@@ -3,8 +3,10 @@ ShinyServer
 
 [![License](https://img.shields.io/badge/license-MIT%20License-brightgreen.svg)](https://opensource.org/licenses/MIT)
 
-List of Shiny apps
-------------------
+
+## List of contents
+
+### Shiny apps
 
 * Simple linear regression 
 	* [Regression coefficients, least squares and distance choice](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/least-squares)
@@ -24,10 +26,11 @@ List of Shiny apps
 	* [Confidence intervals for prediction](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/log-ci-prediction)
 	* [Dealing with nonlinear relationships](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/log-non-linear)
 
-List of `Rmd` documents
------------------------
+### `Rmd` documents
 
 * [A 10 minute-ish introduction to linear regression](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/10min-lin-reg)
 
 
+## Important
 
+The links above point towards `https` urls with auto-signed SSL certificates. That means that you most likely will get a warning from your browser saying that "Your connection is not private" and will need to click in "Advanced" and allow an exception. Using `https` rather than `http` allows to include the apps in both `http` and `https` websites.
