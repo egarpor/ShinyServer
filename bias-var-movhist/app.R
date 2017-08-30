@@ -12,20 +12,21 @@ load("xData.RData")
 ui <- fluidPage(align = "center",
                 
   # Horizontal layout with:
-  # - the slider input for the bandwidth
-  # - the select input for the distribution
   # - the select input for the sample size n
+  # - the select input for the distribution
+  # - the slider input for the bandwidth
+  
   verticalLayout(
     
     inputPanel(
       
-      sliderInput(inputId = "h", label = "h:",
-                  min = 0.01, max = 2, value = 1, step = 0.01),
+      selectInput(inputId = "n", label = "Sample size:",
+                  choices = c(50, 100, 250, 500, 1000), selected = 100),
       selectInput(inputId = "dist", label = "Density:",
                   choices = c("Normal", "Mixture", "Bart Simpson"), 
                   selected = "Normal"),
-      selectInput(inputId = "n", label = "Sample size:",
-                  choices = c(50, 100, 250, 500, 1000), selected = 100)
+      sliderInput(inputId = "h", label = "Bandwidth h:",
+                  min = 0.01, max = 2, value = 1, step = 0.01)
       
     ),
     
@@ -53,9 +54,8 @@ server <- function(input, output) {
     # Expectation
     h <- as.numeric(input$h)
     step <- h / 0.01
-    Ef <- (FTrue[(201 + step):(201 + step + length(xGrid5) - 1)] - 
-             FTrue[(201 - step):(201 - step + length(xGrid5) - 1)]) / (2 * h)
-    
+    ind <- 201:(201 + 1001 - 1)
+    Ef <- (FTrue[ind + step] - FTrue[ind - step]) / (2 * h)
     
     # Variance
     n <- as.integer(input$n)
@@ -69,7 +69,7 @@ server <- function(input, output) {
     lines(xGrid5, Ef, lwd = 2)
     lines(xGrid7, fTrue, lwd = 3, col = 2)
     legend("topright", legend = c("True density", 
-                                  expression("Expectation of "*hat(f)[N](h)),
+                                  expression("Expectation of "*hat(f)[N](""%.%"",h)),
                                   "Asymptotic 95% CI"),
            col = c(2, 1, "gray"), lwd = 2)
     

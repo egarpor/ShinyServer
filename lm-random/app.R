@@ -63,7 +63,7 @@ server <- function(input, output) {
   output$regressionPlot <- renderPlot({
 
     # Check if the buttom was clicked
-    if (values$default == 0){
+    if (values$default == 0) {
 
       set.seed(423432)
       error <- rnorm(500)

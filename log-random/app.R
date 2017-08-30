@@ -59,7 +59,7 @@ server <- function(input, output) {
     regX <- 1 / (1 + exp(-regX))
 
     # Check if the buttom was clicked
-    if (values$default == 0){
+    if (values$default == 0) {
 
       set.seed(423432)
       y <- rbinom(n = input$n, size = 1, prob = regX)
