@@ -12,8 +12,8 @@ load("xData.RData")
 ui <- fluidPage(align = "center",
 
   # Horizontal layout with:
-  # - the select input for Gamma's/Exponential's parameter lambda
-  # - the select input for Gamma's parameter p
+  # - the slider input for Gamma's/Exponential's parameter lambda
+  # - the slider input for Gamma's parameter p
   # - the select input for the sample size n
   verticalLayout(
 
