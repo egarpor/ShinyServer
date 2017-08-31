@@ -11,20 +11,21 @@ load("xData.RData")
 # UI for application
 ui <- fluidPage(align = "center",
 
-  # Horizontal layout with:
-  # - the slider input for Gamma's/Exponential's parameter lambda
-  # - the slider input for Gamma's parameter p
-  # - the select input for the sample size n
+  # Vertical layout with:
+  # - a radio input for the sample size
+  # - a slider input for Gamma's/Exponential's parameter lambda
+  # - a slider input for Gamma's parameter p
   verticalLayout(
 
     inputPanel(
 
+      radioButtons(inputId = "n", label = "Sample size:",
+                   choices = c(50, 100, 250, 500), selected = 100,
+                   inline = TRUE),
       sliderInput(inputId = "lambda", label = HTML("&lambda;:"),
                   min = 0.5, max = 3, value = 1, step = 0.5),
       sliderInput(inputId = "p", label = "p:",
-                  min = 0.25, max = 2, value = 1, step = 0.25),
-      selectInput(inputId = "n", label = "Sample size:",
-                  choices = c(50, 100, 250, 500), selected = 100)
+                  min = 0.25, max = 2, value = 1, step = 0.25)
 
     ),
 
@@ -49,7 +50,9 @@ server <- function(input, output) {
                      function(s) pexp(q = xGrid, rate = 1 / mean(s)))
     
     # MSEs
-    mseNp <- FTrue * (1 - FTrue) / as.integer(input$n) # Exact, no Monte Carlo
+    mseNp <- FTrue * (1 - FTrue) / as.integer(input$n) 
+    # Above expression is exact, no Monte Carlo is needed. Below if we wanted 
+    # the Monte Carlo way
     # mseNp <- rowMeans(apply(samp, 2, function(s) (ecdf(s)(xGrid) - FTrue)^2))
     mseExp <- rowMeans(apply(samp, 2, function(s) 
       (pexp(q = xGrid, rate = 1 / mean(s)) - FTrue)^2))
@@ -90,4 +93,5 @@ shinyApp(ui = ui, server = server)
 #                              nrow = 500, ncol = M)
 # }
 # 
+# # Save data
 # save(list = c("xGrid", "sampGamma"), file = "xData.RData")

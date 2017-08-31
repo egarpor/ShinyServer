@@ -1,6 +1,7 @@
 
 #
-# Shiny web application for illustrating the assumptions in multiple linear regression
+# Shiny web application for illustrating the assumptions in multiple
+# linear regression
 #
 
 library(shiny)
@@ -9,6 +10,17 @@ library(plot3Drgl)
 
 # Load data
 load("assumptions3D-TF.RData")
+
+# Choices
+choices <- 1:4
+namesTrue <- c("X1 and X2 normal",
+               "X1 and X2 related",
+               "X1 discrete and X2 continuous",
+               "High dispersion")
+namesFalse <- c("No linearity",
+                "No homoscedasticity",
+                "No normality",
+                "No independence")
 
 #' @title Project points into a plane
 #'
@@ -24,7 +36,7 @@ load("assumptions3D-TF.RData")
 #' projPlane(x = x, coefs = c(1, 0, 0), intercept = 0)
 #' @author Eduardo García-Portugués (\email{edgarcia@est-econ.uc3m.es}).
 #' @export
-projPlane = function(x, coefs, intercept) {
+projPlane <- function(x, coefs, intercept) {
 
   # Compute a point on the plane (i.e., point %*% coefs = intercept)
   ind <- which.max(abs(coefs))
@@ -55,14 +67,14 @@ projPlane = function(x, coefs, intercept) {
 ui <- fluidPage(align = "center",
 
   # Vertical layout with:
-  # - a select input for choosing whether the assumptions hold or not
+  # - a radio input for choosing whether the assumptions hold or not
   # - a dynamic selector for specifying cases where the assumptions hold / do not hold
   verticalLayout(
 
     inputPanel(
 
-      selectInput(inputId = "assump", label = "Assumptions satisfied?",
-                  choices = c("Yes", "No")),
+      radioButtons(inputId = "assump", label = "Assumptions satisfied?",
+                   choices = c("Yes", "No")),
       uiOutput(outputId = "cases")
 
     ),
@@ -76,31 +88,12 @@ ui <- fluidPage(align = "center",
 # Server logic
 server <- function(input, output) {
 
-  # Choices
-  choices <- 1:4
-  namesTrue <- c("X1 and X2 normal",
-                 "X1 and X2 related",
-                 "X1 discrete and X2 continuous",
-                 "High dispersion")
-  namesFalse <- c("No linearity",
-                  "No homoscedasticity",
-                  "No normality",
-                  "No independence")
-
   # Update cases
   output$cases <- renderUI({
 
     # Select data and caption
-    if (input$assump == "Yes") {
-
-      names(choices) <- namesTrue
-
-    } else {
-
-      names(choices) <- namesFalse
-
-    }
-    selectInput(inputId = "case", label = "Case", choices = choices)
+    names(choices) <- switch(input$assump, "Yes" = namesTrue, "No" = namesFalse)
+    selectInput(inputId = "case", label = "Case:", choices = choices)
 
   })
 
@@ -226,7 +219,8 @@ shinyApp(ui = ui, server = server)
 # yF[4, ] <- 1 * x1F[4, ] - 0.5 * x2F[4, ] + eps
 #
 # # Save data
-# save(list = c("x1T", "x2T", "yT", "x1F", "x2F", "yF"), file = "assumptions3D-TF.RData")
+# save(list = c("x1T", "x2T", "yT", "x1F", "x2F", "yF"), 
+#      file = "assumptions3D-TF.RData")
 #
 # # For the course
 # assumptions3D <- data.frame(x1 = t(rbind(x1T, x1F)), x2 = t(rbind(x2T, x2F)),

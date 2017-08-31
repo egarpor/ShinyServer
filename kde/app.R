@@ -13,10 +13,11 @@ load("xData.RData")
 ui <- fluidPage(align = "center",
                 
   # Horizontal layout with:
-  # - action buttom for generating a new sample
-  # - the select input for the sample size n
-  # - the select input for the distribution
-  # - the slider input for the bandwidth
+  # - an action buttom for generating a new sample
+  # - a slider input for the sample size
+  # - a radio input for the distribution
+  # - a slider input for the bandwidth
+  # - a select input for the kernel
   
   verticalLayout(
     
@@ -26,9 +27,9 @@ ui <- fluidPage(align = "center",
                    label = HTML("<h5>Get a new<br> sample!</h5>")),
       sliderInput(inputId = "n", label = "Sample size:",
                   min = 1, max = 200, value = 10, step = 1),
-      selectInput(inputId = "dist", label = "Density:",
-                  choices = c("Normal", "Mixture", "Bart Simpson"), 
-                  selected = "Normal"),
+      radioButtons(inputId = "dist", label = "Density:",
+                   choices = c("Normal" = 1, "Mixture" = 2, "Claw" = 3), 
+                   selected = 1, inline = TRUE),
       sliderInput(inputId = "h", label = "Bandwidth h:",
                   min = 0.01, max = 2, value = 0.5, step = 0.05),
       selectInput(inputId = "kernel", label = "Kernel:",
@@ -56,15 +57,12 @@ server <- function(input, output) {
     
   })
   
-  # Error sampling
-  getSamp <- eventReactive(input$newSample, {
-    
-    switch(input$dist,
-           "Normal" = rnorm(n = 200),
-           "Mixture" = rnorMix(n = 200, obj = MW.nm7),
-           "Bart Simpson" = rnorMix(n = 200, obj = MW.nm10))
-    
-  })
+  # Sampling
+  getSamp <- function() switch(input$dist,
+                               "1" = rnorm(n = 200),
+                               "2" = rnorMix(n = 200, obj = MW.nm7),
+                               "3" = rnorMix(n = 200, obj = MW.nm10))
+  getReactSamp <- eventReactive(input$newSample, getSamp())
   
   output$kdePlot <- renderPlot({
     
@@ -72,28 +70,25 @@ server <- function(input, output) {
     if (values$default == 0) {
       
       set.seed(423432)
-      samp <- switch(input$dist,
-                     "Normal" = rnorm(n = 200),
-                     "Mixture" = rnorMix(n = 200, obj = MW.nm7),
-                     "Bart Simpson" = rnorMix(n = 200, obj = MW.nm10))
+      samp <- getSamp()
       
     } else {
       
-      samp <- getSamp()
+      samp <- getReactSamp()
       
     }
     
-    # True density and distribution
+    # True density
+    fTrue <- dens[, as.integer(input$dist)]
+    
+    # Prepare for plot
     n <- as.integer(input$n)
-    samp <- samp[1:n]
     h <- as.numeric(input$h)
-    fTrue <- switch(input$dist,
-                    "Normal" = dens[, 1],
-                    "Mixture" = dens[, 2],
-                    "Bart Simpson" = dens[, 3])
     kernel <- tolower(input$kernel)
+    samp <- samp[1:n]
     
     # Plot
+    par(mar = c(4, 4, 3, 1) + 0.2, oma = rep(0, 4))
     plot(xGrid, fTrue, type = "l", xlab = "x", ylab = "Density", col = 2, 
          lwd = 3, ylim = c(0, 0.65))
     kde <- density(x = samp, bw = h, from = -4, to = 4, kernel = kernel)
@@ -106,7 +101,7 @@ server <- function(input, output) {
                                   "Kernel density estimator",
                                   "Kernels centered at data"),
            col = c(2, 1, "gray"), lwd = 2)
-    rug(samp, lwd = 2)
+    rug(samp, col = "gray")
     
   }, width = 650, height = 650)
   
@@ -123,5 +118,5 @@ shinyApp(ui = ui, server = server)
 #               dnorMix(x = xGrid, obj = MW.nm7),
 #               dnorMix(x = xGrid, obj = MW.nm10))
 # 
-# 
+# # Save data
 # save(list = c("xGrid", "dens"), file = "xData.RData")
