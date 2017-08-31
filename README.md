@@ -25,12 +25,17 @@ ShinyServer
 	* [Randomness of the logistic regression curve](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/log-random)
 	* [Confidence intervals for prediction](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/log-ci-prediction)
 	* [Dealing with nonlinear relationships](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/log-non-linear)
-
+* Nonparametric density estimation
+	* [Bias and variance of the moving histogram](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/bias-var-movhist/)
+	* [Construction of the kernel density estimator](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/kde/)
+	* [Bandwidth selection in kernel density estimation](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/kde-bwd/)
+* Other
+	* [An illustration of nonparametric vs parametric estimation](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/dist-mse/)
+			
 ### `Rmd` documents
 
 * [A 10 minute-ish introduction to linear regression](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/10min-lin-reg)
 
-
 ## Important
 
-The links above point towards `https` urls with auto-signed SSL certificates. That means that you most likely will get a warning from your browser saying that "Your connection is not private" and will need to click in "Advanced" and allow an exception. Using `https` rather than `http` allows to include the apps in both `http` and `https` websites.
+The links above point towards `https` urls with auto-signed SSL certificates. That means that you most likely will get a warning from your browser saying that "Your connection is not private". Click in "Advanced" and allow an exception. `https` has been considered since it allows to include the apps in both `http` and `https` websites.
