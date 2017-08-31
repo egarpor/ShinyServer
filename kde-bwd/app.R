@@ -231,7 +231,7 @@ server <- function(input, output) {
                        paste("(", sprintf("%.2f", ise[ord]), ")", sep = ""),
                        collapse = ", ")
       title(main = paste("MW", id, ": ", iseText, sep = ""), 
-            cex.main = ifelse(nArrange == 1, 1.5, 0.9))
+            cex.main = ifelse(nArrange == 1, 1.4, 0.8))
       
     }
     
