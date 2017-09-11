@@ -89,13 +89,14 @@ server <- function(input, output) {
     
     # Plot
     par(mar = c(4, 4, 3, 1) + 0.2, oma = rep(0, 4))
-    plot(xGrid, fTrue, type = "l", xlab = "x", ylab = "Density", col = 2, 
-         lwd = 3, ylim = c(0, 0.65))
-    kde <- density(x = samp, bw = h, from = -4, to = 4, kernel = kernel)
-    matlines(kde$x, sapply(1:n, function(i) density(x = samp[i], bw = h, 
-                                                  from = -4, to = 4, 
-                                                  kernel = kernel)$y) / n,
-             lty = 1, col = "gray")
+    plot(xGrid, fTrue, type = ifelse(kernel == "rectangular", "s", "l"), 
+         xlab = "x", ylab = "Density", col = 2, lwd = 3, ylim = c(0, 0.65))
+    kde <- density(x = samp, bw = h, from = -4, to = 4, n = 1024, 
+                   kernel = kernel)
+    matlines(kde$x, sapply(1:n, function(i) 
+      density(x = samp[i], bw = h, from = -4, to = 4, n = 1024, 
+              kernel = kernel)$y) / n, lty = 1, col = "gray", 
+      type = ifelse(kernel == "rectangular", "s", "l"))
     lines(kde, lwd = 2)
     legend("topright", legend = c("True density", 
                                   "Kernel density estimator",
@@ -112,7 +113,7 @@ shinyApp(ui = ui, server = server)
 
 # # Data
 # library(nor1mix)
-# xGrid <- seq(-4, 4, by = 0.01)
+# xGrid <- seq(-4, 4, by = 0.005)
 # 
 # dens <- cbind(dnorm(xGrid),
 #               dnorMix(x = xGrid, obj = MW.nm7),

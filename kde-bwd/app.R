@@ -9,7 +9,7 @@ library(ks)
 
 # Load data
 load("xData.RData")
-bwdSels <- c("RT", "SJ", "UCV", "BCV", "SCV")
+bwdSels <- c("RT", "DPI", "LSCV", "BCV")
 choices1x1 <- 1:16
 choices2x2 <- 1:4
 names(choices1x1) <- paste(paste("MW", 1:16, sep = ""), 
@@ -33,16 +33,16 @@ names(choices2x2) <- paste("MW", seq(1, 13, by = 4),
 #' A bandwidth on a scale suitable for the \code{bw} argument of \code{density}.
 #' @examples
 #' library(nor1mix)
-# set.seed(987654)
-# samp <- rnorMix(n = 100, obj = MW.nm11)
-# bw.ucv.mod(x = samp, plot.cv = TRUE)
-# abline(v = bw.ucv(samp), col = 3)
-# bw.bcv.mod(x = samp, plot.cv = TRUE)
-# abline(v = bw.bcv(samp), col = 3)
+#' set.seed(31231311)
+#' samp <- rnorMix(n = 100, obj = MW.nm11)
+#' bw.ucv.mod(x = samp, plot.cv = TRUE)
+#' abline(v = bw.ucv(samp), col = 3)
+#' bw.bcv.mod(x = samp, plot.cv = TRUE)
+#' abline(v = bw.bcv(samp), col = 3)
 #' @author Code modified from \code{\link[stats]{bw.cv}} and \code{\link[stats]{bw.ucv}} by Eduardo García-Portugués (\email{edgarcia@est-econ.uc3m.es}).
 #' @export
 bw.ucv.mod <- function(x, nb = 1000L, 
-                       h.grid = (seq(sqrt(0.01), sqrt(2), l = 200))^2, 
+                       h.grid = diff(range(x)) * (seq(0.1, 1, l = 200))^2, 
                        plot.cv = FALSE) {
   if ((n <- length(x)) < 2L) 
     stop("need at least 2 data points")
@@ -76,7 +76,7 @@ bw.ucv.mod <- function(x, nb = 1000L,
 #' @rdname bw.ucv.mod
 #' @export
 bw.bcv.mod <- function(x, nb = 1000L, 
-                       h.grid = (seq(sqrt(0.01), sqrt(2), l = 200))^2,
+                       h.grid = diff(range(x)) * (seq(0.1, 1, l = 200))^2, 
                        plot.cv = FALSE) {
   if ((n <- length(x)) < 2L) 
     stop("need at least 2 data points")
@@ -131,8 +131,8 @@ ui <- fluidPage(align = "center",
                      choiceValues = 1:2, selected = 1),
         uiOutput(outputId = "dist"),
         checkboxGroupInput(inputId = "bwds", label = "Bandwidth selectors:", 
-                           choiceNames = bwdSels, choiceValues = 1:5, 
-                           selected = 1:3, inline = TRUE)
+                           choiceNames = bwdSels, choiceValues = 1:4, 
+                           selected = 1:4, inline = TRUE)
         
       ),
       
@@ -213,12 +213,11 @@ server <- function(input, output) {
                     "1" = bw.nrd(x = sampleI),
                     "2" = hpi(x = sampleI, binned = TRUE, bgridsize = 512),
                     "3" = bw.ucv.mod(x = sampleI, nb = 512),
-                    "4" = bw.bcv.mod(x = sampleI, nb = 512),
-                    "5" = hscv(x = sampleI, binned = TRUE, bgridsize = 512))
+                    "4" = bw.bcv.mod(x = sampleI, nb = 512))
         dkde <- kde(x = sampleI, eval.points = xGrid, h = h)$estimate
         lines(xGrid, dkde, col = as.integer(k) + 1, lwd = 2)
         legend("topright", legend = c("Density", bwdSels[as.integer(indBdw)]),
-               col = c(1, as.integer(indBdw) + 1), lwd = 1)
+               col = c(1, as.integer(indBdw) + 1), lwd = 2)
         
         # ISE
         ise[k] <- mean((dens[, id] - dkde)^2) * 1e3

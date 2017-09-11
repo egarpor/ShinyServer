@@ -29,6 +29,11 @@ ShinyServer
 	* [Construction of the kernel density estimator](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/kde/)
 	* [Bandwidth selection in kernel density estimation](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/kde-bwd/)
 	* [Transformation of kernel density estimator](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/kde-transf/)
+* Nonparametric regression estimation
+	* [Nadaraya-Watson and local linear estimators]()
+	* [Density estimation via local likelihood]()
+	* [Bootstrap confidence intervals]()
+	* [Splines]()
 * Other
 	* [An illustration of nonparametric vs parametric estimation](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/dist-mse/)
 			
@@ -39,3 +44,7 @@ ShinyServer
 ## Important
 
 The links above point towards `https` urls with auto-signed SSL certificates. That means that you most likely will get a **warning from your browser** saying that "Your connection is not private". Click in "Advanced" and allow an exception. `https` has been considered since it allows to include the apps in both `http` and `https` websites.
+
+## License
+
+All material in this repository is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
