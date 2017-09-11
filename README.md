@@ -28,12 +28,14 @@ ShinyServer
 	* [Bias and variance of the moving histogram](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/bias-var-movhist/)
 	* [Construction of the kernel density estimator](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/kde/)
 	* [Bandwidth selection in kernel density estimation](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/kde-bwd/)
+<!---
 	* [Transformation of kernel density estimator](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/kde-transf/)
 * Nonparametric regression estimation
 	* [Nadaraya-Watson and local linear estimators]()
 	* [Density estimation via local likelihood]()
 	* [Bootstrap confidence intervals]()
 	* [Splines]()
+--->
 * Other
 	* [An illustration of nonparametric vs parametric estimation](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/dist-mse/)
 			
