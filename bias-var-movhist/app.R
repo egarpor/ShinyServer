@@ -65,7 +65,7 @@ server <- function(input, output) {
     lines(xGrid5, Ef, lwd = 2)
     lines(xGrid7, fTrue, lwd = 3, col = 2)
     legend("topright", 
-           legend = c("True density", 
+           legend = c(expression(f(x)), 
                       expression("Expectation of "*hat(f)[N](x,h)),
                       expression("Asymptotic 95% CI for "*f(x))), 
            col = c(2, 1, "gray"), lwd = 2)
