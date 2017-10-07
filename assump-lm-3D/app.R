@@ -48,7 +48,8 @@ projPlane <- function(x, coefs, intercept) {
   if (!is.null(dim(x))) {
 
     n <- dim(x)[1]
-    point <- matrix(point, nrow = n, ncol = p, byrow = TRUE) # For proper sum of vector and matrix by rows
+    # For proper sum of vector and matrix by rows
+    point <- matrix(point, nrow = n, ncol = p, byrow = TRUE) 
     tt <- (point - x) %*% coefs / sum(coefs ^ 2)
     projx <- x + drop(tt) * matrix(coefs, nrow = n, ncol = p, byrow = TRUE)
 
@@ -68,7 +69,8 @@ ui <- fluidPage(align = "center",
 
   # Vertical layout with:
   # - a radio input for choosing whether the assumptions hold or not
-  # - a dynamic selector for specifying cases where the assumptions hold / do not hold
+  # - a dynamic selector for specifying cases where the assumptions hold / 
+  #   do not hold
   verticalLayout(
 
     inputPanel(

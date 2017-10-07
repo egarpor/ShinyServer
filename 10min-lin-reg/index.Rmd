@@ -13,7 +13,6 @@ Companion script for *"A 10 minute-ish introduction to linear regression"* aimed
 Suppose we have a production line where we measured the time (in minutes) required to produce a number of solicited items. There are two random variables: `y` = "time required to produce an order" and `x` = "number of items in the order". We want to explain/predict `y` from `x` from a linear model.
 
 ```{r}
-
 # Production time
 y <- c(175, 189, 344, 88, 114, 338, 271, 173, 284, 277, 337, 58, 146, 277, 123, 227, 63, 337, 146, 68)
 
@@ -22,7 +21,6 @@ x <- c(195, 215, 243, 162, 185, 231, 234, 166, 253, 196, 220, 168, 207, 225, 169
 
 # Data scatterplot (pch = 16 for filled points)
 plot(y ~ x, pch = 16)
-
 ```
 
 ### The `lm` function
@@ -30,7 +28,6 @@ plot(y ~ x, pch = 16)
 The linear fit in `R` is done by the `lm` function and the formula `y ~ x`, used to denote that we are interested in regressing `y` over `x`. 
 
 ```{r}
-
 # Fit a linear model y = beta0 + beta1 * x
 reg <- lm(y ~ x)
 
@@ -44,7 +41,6 @@ reg$coefficients
 plot(y ~ x, pch = 16)
 abline(reg, col = 2)
 segments(x0 = x, y0 = y, x1 = x, y1 = reg$fitted.values)
-
 ```
 
 ### The least squares estimate
@@ -52,7 +48,6 @@ segments(x0 = x, y0 = y, x1 = x, y1 = reg$fitted.values)
 We can check and visualize that `reg$coefficients` indeed contains the least squares estimates and that they minimize the Residual Sum of Squares (RSS).
 
 ```{r}
-
 # Create the design matrix
 X <- cbind(1, x)
 
@@ -67,7 +62,6 @@ sum((y - X %*% betahat)^2)
 You can try to get a better RSS. Good luck! :)
 
 ```{r, echo = FALSE}
-
 # Define input
 inputPanel(
   
@@ -84,7 +78,6 @@ renderPlot({
   abline(a = input$beta0, b = input$beta1, col = 2)
   segments(x0 = x, y0 = y, x1 = x, y1 = input$beta0 + input$beta1 * x)
 })
-  
 ```
 
 ```{r, echo = FALSE}
@@ -110,10 +103,8 @@ renderPlot({
 The `summary` function applied to a `lm` object gives the fitted coefficients and its significances ("Pr(>|t|)"), the $R^2$ ("Multiple R-squared") and the fitted error variance ("Residual standard error").
  
 ```{r}
-
 # Summary of the fit
 summary(reg)
-
 ```
 
 ### Prediction
@@ -121,7 +112,6 @@ summary(reg)
 Prediction of a new observation can be done via the function `predict`, which also provides conficence intervals. The `newdata` argument of `predict` needs a `data.frame`.
 
 ```{r}
-
 # Point in which we want a prediction for y
 newx <- data.frame(x = 200)
 
@@ -130,7 +120,6 @@ predict(reg, newdata = newx, interval = "prediction", level = 0.95)
 
 # The same prediction
 reg$coefficients %*% c(1, 200)
-
 ```
 
 ### Some words of caution with $R^2$
@@ -138,7 +127,6 @@ reg$coefficients %*% c(1, 200)
 $R^2$ does not measure the correctness of a linear model but the **usefulness assuming the model is correct**. 
 
 ```{r}
-
 # Fixed design
 xf <- seq(0, 1, l = 50)
 
@@ -167,13 +155,11 @@ abline(a = reg1$coefficients[1], b = reg1$coefficients[2], col = 3)
 plot(y2 ~ xf, pch = 16, ylim = c(-1, 5))
 abline(a = 1, b = 2, col = 2)
 abline(a = reg2$coefficients[1], b = reg2$coefficients[2], col = 3)
-
 ```
 
 A large $R^2$ means *nothing* if the **assumptions of the model do not hold**.
 
 ```{r}
-
 # Create data that: 
 # 1) does NOT follow a linear model
 # 2) the error is heteroskedastic
@@ -188,7 +174,6 @@ summary(reg3)
 plot(y3 ~ xf, pch = 16)
 lines(0.2 * sin(2 * pi * xf) ~ xf, col = 2)
 abline(reg3, col = 3)
-
 ```
 
 
