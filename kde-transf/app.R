@@ -24,9 +24,9 @@ ui <- fluidPage(align = "center",
       sliderInput(inputId = "n", label = "Sample size:",
                   min = 1, max = 300, value = 9, step = 2),
       selectInput(inputId = "dist", label = "Density:",
-                   choices = c("Lognormal" = 1, "Lognormal mixt." = 2, 
-                               "Beta" = 3, "Beta mixt." = 4), 
-                   selected = 1),
+                  choices = c("Lognormal" = 1, "Lognormal mixt." = 2, 
+                              "Beta" = 3, "Beta mixt." = 4), 
+                  selected = 1),
       sliderInput(inputId = "h", label = "Bandwidth h:",
                   min = 0.01, max = 2, value = 0.5, step = 0.05),
       uiOutput(outputId = "transf")
@@ -49,7 +49,7 @@ server <- function(input, output) {
     values$default <- input$newSample
     
   })
-  
+
   # Ban certain transformations
   output$transf <- renderUI({
     
@@ -95,30 +95,36 @@ server <- function(input, output) {
                     "3" = function(x) dbeta(x, shape1 = 1, shape2 = 2),
                     "4" = function(x) 0.5 * dbeta(x, shape1 = 1, shape2 = 2) +
                       0.5 * dbeta(x, shape1 = 2, shape2 = 2))
-    # Load data
-    xGrid <- switch(input$transf,
-                    "None" = seq(-4, 4, length.out = 1e3),
-                    "Log" = seq(exp(-4), exp(4), length.out = 1e3),
-                    "Probit" = seq(pnorm(-4), pnorm(4), length.out = 1e3))
     
-    # Transformation
-    transf <- switch(input$transf,
-                     "None" = function(x) x,
-                     "Log" = function(x) log(x),
-                     "Probit" = function(x) qnorm(x))
-    transfInv <- switch(input$transf,
-                        "None" = function(x) x,
-                        "Log" = function(x) exp(x),
-                        "Probit" = function(x) pnorm(x))
-    transfDer <- switch(input$transf,
-                        "None" = function(x) 1,
-                        "Log" = function(x) 1 / x,
-                        "Probit" = function(x) 1 / dnorm(qnorm(x)))
+    # Set default reactive for the first call
+    iTransf <- ifelse(length(input$transf) == 0, "None", input$transf)
     
     # Prepare for plot
     n <- as.integer(input$n)
     h <- as.numeric(input$h)
     samp <- samp[1:n]
+    m <- -min(samp)
+    
+    # Load data
+    xGrid <- switch(iTransf,
+                    "None" = seq(-4, 4, length.out = 1e3),
+                    "Log" = seq(exp(-4), exp(4), length.out = 1e3),
+                    "Probit" = seq(pnorm(-4), pnorm(4), length.out = 1e3))
+    
+    # Transformation
+    transf <- switch(iTransf,
+                     "None" = function(x) x,
+                     "Log" = function(x) log(x),
+                     "Probit" = function(x) qnorm(x),
+                     "Shifted power" = function(x) sqrt(x + m))
+    transfInv <- switch(iTransf,
+                        "None" = function(x) x,
+                        "Log" = function(x) exp(x),
+                        "Probit" = function(x) pnorm(x))
+    transfDer <- switch(iTransf,
+                        "None" = function(x) 1,
+                        "Log" = function(x) 1 / x,
+                        "Probit" = function(x) 1 / dnorm(qnorm(x)))
     
     # Plot
     par(mfrow = c(1, 2), mar = c(4, 4, 3, 1) + 0.2, oma = rep(0, 4))
