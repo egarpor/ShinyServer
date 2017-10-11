@@ -36,7 +36,7 @@ ui <- fluidPage(align = "center",
                   choices = c("Gaussian", "Epanechnikov", "Rectangular", 
                               "Triangular", "Biweight", "Cosine", 
                               "Optcosine"), 
-                  selected = "Normal")
+                  selected = "Gaussian")
       
     ),
     
