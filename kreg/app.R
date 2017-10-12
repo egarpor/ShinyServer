@@ -47,7 +47,7 @@ ui <- fluidPage(align = "center",
                    choices = c("Gaussian", "Rectangular"), 
                    selected = "Gaussian", inline = TRUE),
       checkboxGroupInput(inputId = "degree", label = "Degree:",
-                         choices = 0:2, selected = 1, inline = TRUE),
+                         choices = 0:3, selected = 1, inline = TRUE),
       checkboxGroupInput(inputId = "disp", label = "Fit to show:",
                          choices = c("Global", "Local"), 
                          selected = c("Global", "Local"), inline = TRUE),
@@ -106,7 +106,7 @@ server <- function(input, output) {
     
     # Prepare for plot
     h <- as.numeric(input$h)
-    degree <- 0:2 %in% as.integer(input$degree)
+    degree <- 0:3 %in% as.integer(input$degree)
     K <- switch(input$kernel, 
                 "Gaussian" = dnorm,
                 "Rectangular" = function(x) -1 < x & x < 1)
@@ -132,11 +132,11 @@ server <- function(input, output) {
     reg <- t(sapply(xGrid, function(x) {
       
       w <- K((samp$X - x) / h) / h
+      X <- cbind(1, samp$X - x, (samp$X - x)^2, (samp$X - x)^3)
       c(weighted.mean(x = samp$Y, w = w), 
-        lm.wfit(x = cbind(1, samp$X - x), y = samp$Y, 
-                w = w)$coefficients,
-        lm.wfit(x = cbind(1, samp$X - x, (samp$X - x)^2), 
-                y = samp$Y, w = w)$coefficients)
+        lm.wfit(x = X[, -c(3, 4)], y = samp$Y, w = w)$coefficients,
+        lm.wfit(x = X[, -4], y = samp$Y, w = w)$coefficients,
+        lm.wfit(x = X, y = samp$Y, w = w)$coefficients)
       
     }))
     
@@ -149,7 +149,7 @@ server <- function(input, output) {
     if (degree[1]) {
       
       reg0 <- reg[xi, 1]
-      points(input$x, reg0, pch = 19, cex = 1.25, col = 3)
+      points(input$x, reg0, pch = 19, cex = 1.25, col = rgb(0, 1, 0))
       y <- rep(reg0, lGrid)
       
       if ("Local" %in% input$disp) {
@@ -170,7 +170,7 @@ server <- function(input, output) {
     if (degree[2]) {
       
       reg1 <- reg[xi, 2:3]
-      points(input$x, reg1[1], pch = 19, cex = 1.25, col = 4)
+      points(input$x, reg1[1], pch = 19, cex = 1.25, col = rgb(0, 0, 1))
       y <- reg1[1] + reg1[2] * (xGrid - input$x)
       
       if ("Local" %in% input$disp) {
@@ -191,7 +191,8 @@ server <- function(input, output) {
     if (degree[3]) {
       
       reg2 <- reg[xi, 4:6]
-      points(input$x, reg2[1], pch = 19, cex = 1.25, col = 5)
+      points(input$x, reg2[1], pch = 19, cex = 1.25, 
+             col = rgb(0.63, 0.13, 0.94))
       y <- reg2[1] + reg2[2] * (xGrid - input$x) + 
         reg2[3] * (xGrid - input$x)^2
       
@@ -210,13 +211,36 @@ server <- function(input, output) {
       }
       
     }
-
+    if (degree[4]) {
+      
+      reg3 <- reg[xi, 7:10]
+      points(input$x, reg3[1], pch = 19, cex = 1.25, col = rgb(1, 0.65, 0))
+      y <- reg3[1] + reg3[2] * (xGrid - input$x) + 
+        reg3[3] * (xGrid - input$x)^2 + reg3[4] * (xGrid - input$x)^3
+      
+      if ("Local" %in% input$disp) {
+        
+        segments(x0 = xGrid[-lGrid], y0 = y[-lGrid], 
+                 x1 = xGrid[-1L], y1 = y[-1L],
+                 col = rgb(1, 0.65, 0, alpha = pmax(kde / max(kde), 0.1)),
+                 lwd = 2)
+        
+      }
+      if ("Global" %in% input$disp) {
+        
+        lines(xGrid, reg[, 7], lwd = 2, col = rgb(1, 0.65, 0))
+        
+      }
+      
+    }
+    
     # Legend
     legend("topright", legend = c("True regression", "Kernel at x",
-                                  c("Local constant fit", "Local linear fit", 
-                                    "Local quadratic fit")[degree]),
-           col = c(2, "gray", rgb(c(0, 0, 0.63), c(1, 0, 0.13), 
-                                  c(0, 1, 0.94))[degree]), lwd = 2)
+                                  c("Local constan", "Local linear", 
+                                    "Local quadratic", "Local cubic")[degree]),
+           col = c(2, "gray", rgb(c(0, 0, 0.63, 1), c(1, 0, 0.13, 0.65), 
+                                  c(0, 1, 0.94, 0))[degree]), 
+           lwd = 2)
     rug(samp$X, col = "gray")
     
   }, width = 650, height = 650)
