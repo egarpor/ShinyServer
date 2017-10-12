@@ -30,7 +30,7 @@ ShinyServer
 	* [Bandwidth selection in kernel density estimation](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/kde-bwd/)
 	* [Transformation of kernel density estimator](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/kde-transf/)
 * Nonparametric regression estimation
-	* [Construction of local polynomial regression estimator](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/kreg/)
+	* [Construction of the local polynomial regression estimator](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/kreg/)
 * Other
 	* [An illustration of nonparametric vs parametric estimation](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/dist-mse/)
 
