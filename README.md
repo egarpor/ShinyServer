@@ -7,7 +7,7 @@ ShinyServer
 
 ### Shiny apps
 
-* Simple linear regression 
+* Simple linear regression
 	* [Regression coefficients, least squares and distance choice](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/least-squares)
 	* [Randomness of the regression line](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/lm-random)
 	* [Coverage of the confidence intervals](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/ci-random)
@@ -29,9 +29,11 @@ ShinyServer
 	* [Construction of the kernel density estimator](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/kde/)
 	* [Bandwidth selection in kernel density estimation](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/kde-bwd/)
 	* [Transformation of kernel density estimator](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/kde-transf/)
+* Nonparametric regression estimation
+	* [Construction of local polynomial regression estimator](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/kreg/)
 * Other
 	* [An illustration of nonparametric vs parametric estimation](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/dist-mse/)
-			
+
 ### `Rmd` documents
 
 * [A 10 minute-ish introduction to linear regression](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/10min-lin-reg)
