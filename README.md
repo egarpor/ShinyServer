@@ -31,6 +31,7 @@ ShinyServer
 	* [Transformation of kernel density estimator](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/kde-transf/)
 * Nonparametric regression estimation
 	* [Construction of the local polynomial regression estimator](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/kreg/)
+	* [Construction of the local likelihood estimator](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/loclik/)
 * Other
 	* [An illustration of nonparametric vs parametric estimation](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/dist-mse/)
 

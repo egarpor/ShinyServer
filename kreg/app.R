@@ -24,7 +24,7 @@ ui <- fluidPage(align = "center",
                 
   # Horizontal layout with:
   # - an action buttom for generating a new sample
-  # - a radio input for the regression function
+  # - a select input for the regression function
   # - a slider input for the bandwidth
   # - a radio input for the kernel
   # - a checkbox input for the degree
@@ -134,7 +134,7 @@ server <- function(input, output) {
       w <- K((samp$X - x) / h) / h
       X <- cbind(1, samp$X - x, (samp$X - x)^2, (samp$X - x)^3)
       c(weighted.mean(x = samp$Y, w = w), 
-        lm.wfit(x = X[, -c(3, 4)], y = samp$Y, w = w)$coefficients,
+        lm.wfit(x = X[, 1:2], y = samp$Y, w = w)$coefficients,
         lm.wfit(x = X[, -4], y = samp$Y, w = w)$coefficients,
         lm.wfit(x = X, y = samp$Y, w = w)$coefficients)
       
