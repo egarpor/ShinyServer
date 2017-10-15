@@ -4,7 +4,6 @@
 #
 
 library(shiny)
-library(nor1mix)
 
 # Load data
 load("loclik.RData")
@@ -14,7 +13,7 @@ m <- function(x, type) {
          "2" = logistic(1 + 2 * x),
          "3" = 0.75 * logistic(1 + 2 * x) + 0.25 * logistic(2 - 3 * x),
          "4" = cos(x)^2,
-         "5" = sin(1.1 * pi / (abs(x) + 0.75))^2)
+         "5" = logistic(3 * sin(x)))
 }
 getSamp <- function(n, type) {
 
@@ -206,7 +205,7 @@ shinyApp(ui = ui, server = server)
 #          "2" = logistic(1 + 2 * x),
 #          "3" = 0.75 * logistic(1 + 2 * x) + 0.25 * logistic(2 - 3 * x),
 #          "4" = cos(x)^2,
-#          "5" = sin(1.1 * pi / (abs(x) + 0.75))^2)
+#          "5" = logistic(3 * sin(x)))
 # }
 # mGrid <- cbind(m(xGrid, 1), m(xGrid, 2), m(xGrid, 3), m(xGrid, 4), m(xGrid, 5))
 # lGrid <- length(xGrid)
