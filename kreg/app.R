@@ -9,12 +9,14 @@ library(nor1mix)
 # Load data
 xGrid <- seq(-4, 4, by = 0.01)
 m <- function(x, type) {
+  
   switch(type, 
          "1" = 5,
          "2" = 4.5 + 0.75 * x,
          "3" = 3 - 0.75 * x + 0.25 * x^2,
          "4" = 5 + x * sin(x),
          "5" = 4 + 2 * sqrt(abs(x)) * sin(1.1 * pi / (abs(x) + 0.3)))
+  
 }
 mGrid <- cbind(m(xGrid, 1), m(xGrid, 2), m(xGrid, 3), m(xGrid, 4), m(xGrid, 5))
 lGrid <- length(xGrid)
@@ -75,6 +77,7 @@ server <- function(input, output) {
   
   # Sampling
   getSamp <- function() {
+    
     X <- switch(input$reg,
                 "1" = rnorm(n = 200),
                 "2" = rnorMix(n = 200, obj = MW.nm7),
@@ -84,6 +87,7 @@ server <- function(input, output) {
     e <- rnorm(n = 200, sd = 0.75)
     Y <- m(X, type = input$reg) + e
     return(list("X" = X, "Y" = Y))
+    
   }
   getReactSamp <- eventReactive(input$newSample, getSamp())
   
