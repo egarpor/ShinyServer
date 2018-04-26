@@ -15,7 +15,7 @@ load("assumptions3D-TF.RData")
 choices <- 1:4
 namesTrue <- c("X1 and X2 normal",
                "X1 and X2 related",
-               "X1 discrete and X2 continuous",
+               "X1 continuous and X2 discrete",
                "High dispersion")
 namesFalse <- c("No linearity",
                 "No homoscedasticity",

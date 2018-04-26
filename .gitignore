@@ -1,3 +1,4 @@
 *.pem
 *.txt
 webshot-apps.R
+.DS_Store
