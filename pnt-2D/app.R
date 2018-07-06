@@ -18,34 +18,29 @@ anim <- animationOptions(interval = 300, loop = TRUE, playButton = NULL,
 # UI for application
 ui <- fluidPage(align = "center",
                 
-  verticalLayout(
+  sidebarLayout(
     
-    inputPanel(
-      
+    sidebarPanel(
       radioButtons(inputId = "w", label = "winding number:",
-                   choices = c(1, 2), selected = 1, inline = TRUE)
-      
-    ), 
-    inputPanel(
+                   choices = c(1, 2), selected = 1, inline = TRUE), 
       sliderInput(inputId = "x1", label = "u(x1):", min = 0, max = 1, 
                   value = s, step = s, animate = anim, post = "pi"),
       sliderInput(inputId = "x2", label = "u(x2):", min = 0, max = 1, 
                   value = 2 * s, step = s, animate = anim, post = "pi"),
       sliderInput(inputId = "x3", label = "u(x3):", min = -1, max = 1, 
-                  value = 3 * s, step = 2 * s, animate = anim, post = "pi")
-    ),
-    inputPanel(
+                  value = 3 * s, step = 2 * s, animate = anim, post = "pi"),
       sliderInput(inputId = "y1", label = "v(y1):", min = 0, max = 1, 
                   value = 4 * s, step = s, animate = anim, post = "pi"),
       sliderInput(inputId = "y2", label = "v(y2):", min = -1, max = 1, 
                   value = 5 * s, step = 2 * s, animate = anim, post = "pi")
-      
-    ),
+      ),
     
-    plotOutput("plot")
+    mainPanel(
+      plotOutput("plot")
+    )
     
   )
-                
+  
 )
 
 # Server logic
