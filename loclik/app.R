@@ -183,7 +183,7 @@ server <- function(input, output) {
 
     # Legend
     legend("topright", legend = c("True regression", "Kernel at x",
-                                  c("Local constan", "Local linear", 
+                                  c("Local constant", "Local linear", 
                                     "Local quadratic", "Local cubic")[degree]),
            col = c(2, "gray", rgb(c(0, 0, 0.63, 1), c(1, 0, 0.13, 0.65), 
                                   c(0, 1, 0.94, 0))[degree]), 
