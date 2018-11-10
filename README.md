@@ -1,7 +1,7 @@
 ShinyServer
 ===========
 
-[![License](https://img.shields.io/badge/license-CC_BY--NC--SA_4.0-blue.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+[![License](https://img.shields.io/badge/license-CC_BY--NC--ND_4.0-blue.svg)](https://creativecommons.org/licenses/by-nc-nd/4.0/)
 
 ## Important warning!
 
@@ -45,4 +45,4 @@ The links below point towards `https` urls with auto-signed SSL certificates. Th
 
 ## License
 
-All material in this repository is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+All the material in this repository is licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/).
