@@ -106,6 +106,7 @@ server <- function(input, output) {
     # Plot the (X1, X2) sample, with color gradient according to the linear
     # trend x %*% beta
     col <- viridis(n)[rank(x %*% beta)]
+    par(mar = c(4, 4, 3, 1) + 0.1, oma = rep(0, 4))
     plot(x = x[, 1], y = x[, 2], col = col, pch = 16,
          xlim = c(-4, 4), ylim = c(-4, 4), xlab = "X1", ylab = "X2")
 
