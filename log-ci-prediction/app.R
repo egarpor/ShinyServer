@@ -17,7 +17,7 @@ blue <- rgb(0, 0, 1, alpha = 0.75)
 ui <- fluidPage(align = "center",
 
   # Vertical layout with:
-  # - action buttom for generating a new sample
+  # - action button for generating a new sample
   # - select inputs for sample size and significance level
   # - the slider input for the variance of predictor
 
@@ -60,7 +60,7 @@ server <- function(input, output) {
     regX <- 1 + x
     regX <- 1 / (1 + exp(-regX))
 
-    # Check if the buttom was clicked
+    # Check if the button was clicked
     if (values$default == 0) {
 
       set.seed(423432)

@@ -12,7 +12,7 @@ load("xData.RData")
 ui <- fluidPage(align = "center",
 
   # Vertical layout with:
-  # - action buttom for generating a new sample
+  # - action button for generating a new sample
   # - select input for sample size
   # - the slider inputs for intercept and slope
   # - the slider input for the variance of predictor
@@ -58,7 +58,7 @@ server <- function(input, output) {
     regX <- input$beta0 + input$beta1 * x
     regX <- 1 / (1 + exp(-regX))
 
-    # Check if the buttom was clicked
+    # Check if the button was clicked
     if (values$default == 0) {
 
       set.seed(423432)

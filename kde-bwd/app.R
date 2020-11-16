@@ -12,14 +12,14 @@ load("xData.RData")
 bwdSels <- c("RT", "DPI", "LSCV", "BCV")
 choices1x1 <- 1:16
 choices2x2 <- 1:4
-names(choices1x1) <- paste(paste("MW", 1:16, sep = ""), 
-                           c("Gaussian", "Skewed", "Strong skewed", "Kurtotic", 
-                             "Outlier", "Bimodal", "Separated", 
+names(choices1x1) <- paste(paste("MW", 1:16, sep = ""),
+                           c("Gaussian", "Skewed", "Strong skewed", "Kurtotic",
+                             "Outlier", "Bimodal", "Separated",
                              "Asym. bimodal", "Trimodal", "Claw",
-                             "Double claw", "Asym. claw", "Asym. double claw", 
-                             "Smooth comb", "Discrete comb", "Distant bimodal"), 
+                             "Double claw", "Asym. claw", "Asym. double claw",
+                             "Smooth comb", "Discrete comb", "Distant bimodal"),
                            sep = " - ")
-names(choices2x2) <- paste("MW", seq(1, 13, by = 4), 
+names(choices2x2) <- paste("MW", seq(1, 13, by = 4),
                            "-", seq(4, 16, by = 4), sep = "")
 
 #' @title Biased and unbased cross-validation with grid search
@@ -41,18 +41,18 @@ names(choices2x2) <- paste("MW", seq(1, 13, by = 4),
 #' abline(v = bw.bcv(samp), col = 3)
 #' @author Code modified from \code{\link[stats]{bw.cv}} and \code{\link[stats]{bw.ucv}} by Eduardo García-Portugués (\email{edgarcia@est-econ.uc3m.es}).
 #' @export
-bw.ucv.mod <- function(x, nb = 1000L, 
-                       h.grid = diff(range(x)) * (seq(0.1, 1, l = 200))^2, 
+bw.ucv.mod <- function(x, nb = 1000L,
+                       h.grid = diff(range(x)) * (seq(0.1, 1, l = 200))^2,
                        plot.cv = FALSE) {
-  if ((n <- length(x)) < 2L) 
+  if ((n <- length(x)) < 2L)
     stop("need at least 2 data points")
   n <- as.integer(n)
-  if (is.na(n)) 
+  if (is.na(n))
     stop("invalid length(x)")
-  if (!is.numeric(x)) 
+  if (!is.numeric(x))
     stop("invalid 'x'")
   nb <- as.integer(nb)
-  if (is.na(nb) || nb <= 0L) 
+  if (is.na(nb) || nb <= 0L)
     stop("invalid 'nb'")
   storage.mode(x) <- "double"
   hmax <- 1.144 * sqrt(var(x)) * n^(-1/5)
@@ -61,7 +61,7 @@ bw.ucv.mod <- function(x, nb = 1000L,
   cnt <- Z[[2L]]
   fucv <- function(h) .Call(stats:::C_bw_ucv, n, d, cnt, h)
   # h <- optimize(fucv, c(lower, upper), tol = tol)$minimum
-  # if (h < lower + tol | h > upper - tol) 
+  # if (h < lower + tol | h > upper - tol)
   #   warning("minimum occurred at one end of the range")
   obj <- sapply(h.grid, function(h) fucv(h))
   h <- h.grid[which.min(obj)]
@@ -75,18 +75,18 @@ bw.ucv.mod <- function(x, nb = 1000L,
 
 #' @rdname bw.ucv.mod
 #' @export
-bw.bcv.mod <- function(x, nb = 1000L, 
-                       h.grid = diff(range(x)) * (seq(0.1, 1, l = 200))^2, 
+bw.bcv.mod <- function(x, nb = 1000L,
+                       h.grid = diff(range(x)) * (seq(0.1, 1, l = 200))^2,
                        plot.cv = FALSE) {
-  if ((n <- length(x)) < 2L) 
+  if ((n <- length(x)) < 2L)
     stop("need at least 2 data points")
   n <- as.integer(n)
-  if (is.na(n)) 
+  if (is.na(n))
     stop("invalid length(x)")
-  if (!is.numeric(x)) 
+  if (!is.numeric(x))
     stop("invalid 'x'")
   nb <- as.integer(nb)
-  if (is.na(nb) || nb <= 0L) 
+  if (is.na(nb) || nb <= 0L)
     stop("invalid 'nb'")
   storage.mode(x) <- "double"
   hmax <- 1.144 * sqrt(var(x)) * n^(-1/5)
@@ -95,7 +95,7 @@ bw.bcv.mod <- function(x, nb = 1000L,
   cnt <- Z[[2L]]
   fbcv <- function(h) .Call(stats:::C_bw_bcv, n, d, cnt, h)
   # h <- optimize(fbcv, c(lower, upper), tol = tol)$minimum
-  # if (h < lower + tol | h > upper - tol) 
+  # if (h < lower + tol | h > upper - tol)
   #   warning("minimum occurred at one end of the range")
   obj <- sapply(h.grid, function(h) fbcv(h))
   h <- h.grid[which.min(obj)]
@@ -109,107 +109,107 @@ bw.bcv.mod <- function(x, nb = 1000L,
 
 # UI for application
 ui <- fluidPage(align = "center",
-                
+
     # Horizontal layout with:
-    # - an action buttom for generating a new sample
+    # - an action button for generating a new sample
     # - a select input for the sample size
     # - a radio input for the plots layout
     # - a select input for the distribution
-    # - a dynamic selector 
+    # - a dynamic selector
     # - a checkbox input for the bandwidth
-    
+
     verticalLayout(
-      
+
       inputPanel(
-        
+
         actionButton(inputId = "newSample",
                      label = HTML("<h5>Get a new<br> sample!</h5>")),
         selectInput(inputId = "n", label = "Sample size:",
                     choices = c(50, 100, 250, 500, 1000), selected = 100),
-        radioButtons(inputId = "layout", label = "Layout plots:", 
-                     choiceNames = c("1 x 1", "2 x 2"), 
+        radioButtons(inputId = "layout", label = "Layout plots:",
+                     choiceNames = c("1 x 1", "2 x 2"),
                      choiceValues = 1:2, selected = 1),
         uiOutput(outputId = "dist"),
-        checkboxGroupInput(inputId = "bwds", label = "Bandwidth selectors:", 
-                           choiceNames = bwdSels, choiceValues = 1:4, 
+        checkboxGroupInput(inputId = "bwds", label = "Bandwidth selectors:",
+                           choiceNames = bwdSels, choiceValues = 1:4,
                            selected = 1:4, inline = TRUE)
-        
+
       ),
-      
+
       plotOutput("kdeBwdPlot")
-      
+
     )
 
 )
 
 # Server logic
 server <- function(input, output) {
-  
+
   # Manage the first call
   values <- reactiveValues(default = 0)
   observeEvent(input$newSample, {
-    
+
     values$default <- input$newSample
-    
+
   })
-  
+
   # Sampling
-  getSamp <- function() sapply(1:16, function(i) 
+  getSamp <- function() sapply(1:16, function(i)
       rnorMix(n = 1e3, obj = get(paste("MW.nm", i, sep = ""))))
   getReactSamp <- eventReactive(input$newSample, getSamp())
-  
+
   # Update dist
   output$dist <- renderUI({
-    
+
     # Select data and caption
-    choices <- switch(input$layout, 
-                      "1" = choices1x1, 
+    choices <- switch(input$layout,
+                      "1" = choices1x1,
                       "2" = choices2x2)
     selectInput(inputId = "dist", label = "Densities:",
                 choices = choices, selected = 1)
-    
+
   })
-  
+
   output$kdeBwdPlot <- renderPlot({
-    
-    # Check if the buttom was clicked
+
+    # Check if the button was clicked
     if (values$default == 0) {
-      
+
       set.seed(423432)
       samp <- getSamp()
-      
+
     } else {
-      
+
       samp <- getReactSamp()
-      
+
     }
-    
+
     # Prepare for plots
     arrange <- switch(input$layout, "1" = c(1, 1), "2" = c(2, 2))
     nArrange <- prod(arrange)
     d <- as.integer(input$dist)
     d <- ifelse(length(d) == 0, 1, d)
     ise <- rep(NA, 5)
-    
+
     # Plots
     par(mfrow = arrange, mar = c(4, 4, 3, 1) + 0.2, oma = rep(0, 4))
     for (i in 1:nArrange) {
-      
+
       # Density
       id <- i + (d - 1) * nArrange
-      plot(xGrid, dens[, id], type = "l", xlab = "x", ylab = "Density", col = 1, 
+      plot(xGrid, dens[, id], type = "l", xlab = "x", ylab = "Density", col = 1,
            lwd = 3, ylim = c(0, 0.8), main = "")
-      
+
       # Particular sample
       sampleI <- samp[1:input$n, id]
       rug(sampleI)
-      
+
       # Kdes
       indBdw <- as.integer(input$bwds)
       for (k in indBdw) {
-        
+
         # Select bandwidth and plot kde
-        h <- switch(k, 
+        h <- switch(k,
                     "1" = bw.nrd(x = sampleI),
                     "2" = hpi(x = sampleI, binned = TRUE, bgridsize = 512),
                     "3" = bw.ucv.mod(x = sampleI, nb = 512),
@@ -218,24 +218,24 @@ server <- function(input, output) {
         lines(xGrid, dkde, col = as.integer(k) + 1, lwd = 2)
         legend("topright", legend = c("Density", bwdSels[as.integer(indBdw)]),
                col = c(1, as.integer(indBdw) + 1), lwd = 2)
-        
+
         # ISE
         ise[k] <- mean((dens[, id] - dkde)^2) * 1e3
-        
+
       }
 
       # Info
       ord <- order(ise, na.last = NA)
-      iseText <- paste(bwdSels[ord], 
+      iseText <- paste(bwdSels[ord],
                        paste("(", sprintf("%.2f", ise[ord]), ")", sep = ""),
                        collapse = ", ")
-      title(main = paste("MW", id, ": ", iseText, sep = ""), 
+      title(main = paste("MW", id, ": ", iseText, sep = ""),
             cex.main = ifelse(nArrange == 1, 1.35, 0.75))
-      
+
     }
-    
+
   }, width = 650, height = 650)
-  
+
 }
 
 # Run the application
@@ -244,10 +244,10 @@ shinyApp(ui = ui, server = server)
 # # Data
 # library(nor1mix)
 # xGrid <- seq(-4, 4, by = 0.01)
-# 
+#
 # # Densities
-# dens <- sapply(1:16, function(k) 
+# dens <- sapply(1:16, function(k)
 #   dnorMix(x = xGrid, obj = get(paste("MW.nm", k, sep = ""))))
-# 
+#
 # # Save data
 # save(list = c("xGrid", "dens"), file = "xData.RData")

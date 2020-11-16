@@ -18,38 +18,38 @@ y4 <- -3 + 12 * (x + 1) - 2 * (x + 1)^2 - 4 * (x + 1)^3 + (x + 1)^4 + 10 * eps
 
 # UI for application
 ui <- fluidPage(align = "center",
-  
+
   # Vertical layout with:
   # - the select inputs for the data pattern and type of transformation
   verticalLayout(
-    
+
     inputPanel(
-      
+
       selectInput(inputId = "dataType", label = "Dataset pattern:",
                   choices = c("Linear", "Quadratic", "Cubic", "Quartic")),
       selectInput(inputId = "transfType", label = "Polynomial fit:",
                   choices = c("Degree 1", "Degree 2", "Degree 3", "Degree 4"))
-      
+
     ),
-    
+
     plotOutput("transformationPlot")
-    
+
   )
-                
+
 )
 
 # Server logic
 server <- function(input, output) {
-  
+
   output$transformationPlot <- renderPlot({
-    
+
     # Response
     y <- switch(input$dataType,
                 "Linear" = y1,
                 "Quadratic" = y2,
                 "Cubic" = y3,
                 "Quartic" = y4)
-    
+
     # Transformation of x and xx
     xTransf <- switch(input$transfType,
                       "Degree 1" = x,
@@ -61,11 +61,11 @@ server <- function(input, output) {
                        "Degree 2" = cbind(xx, xx^2),
                        "Degree 3" = cbind(xx, xx^2, xx^3),
                        "Degree 4" = cbind(xx, xx^2, xx^3, xx^4))
-    
+
     # Model regressions
     mod <- lm(y ~ x)
     modTransf <- lm(y ~ xTransf)
-    
+
     # Plot
     par(mfrow = c(1, 2), mar = c(4, 4, 3, 1) + 0.1, oma = rep(0, 4))
     plot(x, y, pch = 16)
@@ -80,9 +80,9 @@ server <- function(input, output) {
           cex.main = 1.25)
     lines(xx, modTransf$coefficients[1] + xxTransf %*% modTransf$coefficients[-1],
           col = 2, lwd = 3)
-    
+
   }, width = 650, height = 325)
-  
+
 }
 
 # Run the application

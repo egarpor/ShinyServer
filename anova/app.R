@@ -13,7 +13,7 @@ x <- seq(-3, 3, l = n)
 ui <- fluidPage(align = "center",
 
   # Vertical layout with:
-  # - action buttom for generating a new sample
+  # - action button for generating a new sample
   # - the slider inputs for the error standard deviation
   verticalLayout(
 
@@ -51,7 +51,7 @@ server <- function(input, output) {
 
   output$anovaPlot <- renderPlot({
 
-    # Check if the buttom was clicked
+    # Check if the button was clicked
     if (values$default == 0) {
 
       set.seed(423432)

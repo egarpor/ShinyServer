@@ -12,7 +12,7 @@ load("xData.RData")
 ui <- fluidPage(align = "center",
 
   # Vertical layout with:
-  # - action buttom for generating a new sample
+  # - action button for generating a new sample
   # - select input for sample size
   # - the slider inputs for intercept and slope
   # - the slider inputs variance of error and predictor
@@ -62,7 +62,7 @@ server <- function(input, output) {
 
   output$regressionPlot <- renderPlot({
 
-    # Check if the buttom was clicked
+    # Check if the button was clicked
     if (values$default == 0) {
 
       set.seed(423432)

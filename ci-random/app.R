@@ -58,7 +58,7 @@ server <- function(input, output) {
 
   output$ciPlot <- renderPlot({
 
-    # Check if the buttom was clicked
+    # Check if the button was clicked
     if (values$default == 0) {
 
       set.seed(423432)

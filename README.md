@@ -23,6 +23,7 @@ The links below point towards `https` urls with auto-signed SSL certificates. Th
 	* [Assumptions of the linear model](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/assump-lm-3D)
 	* [ANOVA decomposition](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/anova-3D)
 	* [Dealing with nonlinear relationships](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/mult-non-linear)
+	* [Linear regression, principal component analysis, and partial least squares](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/plsr)
 * Logistic regression
 	* [Logistic curve and maximum likelihood fit](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/log-maximum-likelihood)
 	* [Randomness of the logistic regression curve](https://ec2-35-177-34-200.eu-west-2.compute.amazonaws.com/log-random)

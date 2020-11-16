@@ -47,7 +47,7 @@ M <- mesh(x, y)
 ui <- fluidPage(align = "center",
 
   # Vertical layout with:
-  # - action buttom for generating a new sample
+  # - action button for generating a new sample
   # - the slider inputs for the error standard deviation
   # - the slider inputs for the rotations and zoom
   verticalLayout(
@@ -90,7 +90,7 @@ server <- function(input, output) {
 
   output$anovaPlot3D <- renderPlot({
 
-    # Check if the buttom was clicked
+    # Check if the button was clicked
     if (values$default == 0) {
 
       set.seed(423432)
