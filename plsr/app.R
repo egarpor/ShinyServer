@@ -24,7 +24,7 @@ ui <- fluidPage(align = "center",
                    label = HTML("<h5>Get a new<br> sample!</h5>")),
       selectInput(inputId = "n", label = "Sample size:",
                   choices = c(100, 500, 1000, 2000), selected = 500),
-      sliderInput(inputId = "theta", label = "Orientation vector:",
+      sliderInput(inputId = "theta", label = "Direction vector:",
                   min = 0, max = 6.28, value = pi, step = 0.1),
       sliderInput(inputId = "rho", label = "Correlation:",
                   min = -1, max = 1, value = 0.5, step = 0.01)
@@ -123,7 +123,7 @@ server <- function(input, output) {
            col = 2, lwd = 4, lty = 1:2)
 
     # Add legend
-    legend("top", legend = expression(beta, "PC 1", "PC 2", "PLS 1", "PLS 2"),
+    legend("top", legend = expression(beta, "PC1", "PC2", "PLS1", "PLS2"),
            lwd = 2, col = c(1, 4, 4, 2, 2), lty = c(1, 1, 2, 1, 2))
 
   }, width = 650, height = 650)
