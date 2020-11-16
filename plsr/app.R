@@ -95,7 +95,7 @@ server <- function(input, output) {
     pc <- princomp(x, fix_sign = TRUE)
 
     # Compute PLS directions
-    pls <- plsr(y ~ x)
+    pls <- plsr(y ~ x)
 
     # Avoid flipping signs by forcing the first loading to be always positive
     # and changing the scores
