@@ -42,7 +42,7 @@ The links below point towards `http` urls. That means that you most likely will 
 
 ### `Rmd` documents
 
-* [A 10 minute-ish introduction to linear regression](http://3.11.48.19:3838/10min-lin-reg)
+* [A 10 minute-ish introduction to linear regression](http://3.11.48.19:3838/10min-lin-reg/)
 
 ## License
 
