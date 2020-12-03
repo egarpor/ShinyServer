@@ -124,7 +124,7 @@ server <- function(input, output) {
 
     # Add legend
     legend("top", legend = expression(beta, "PC1", "PC2", "PLS1", "PLS2"),
-           lwd = 2, col = c(1, 4, 4, 2, 2), lty = c(1, 1, 2, 1, 2))
+           lwd = 2, col = c(1, 2, 2, 4, 4), lty = c(1, 1, 2, 1, 2))
 
   }, width = 650, height = 650)
 
