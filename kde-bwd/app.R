@@ -42,7 +42,7 @@ names(choices2x2) <- paste("MW", seq(1, 13, by = 4),
 #' @author Code modified from \code{\link[stats]{bw.cv}} and \code{\link[stats]{bw.ucv}} by Eduardo García-Portugués (\email{edgarcia@est-econ.uc3m.es}).
 #' @export
 bw.ucv.mod <- function(x, nb = 1000L,
-                       h.grid = 10^seq(-2, log10(1.2 * sd(x) *
+                       h.grid = 10^seq(-3, log10(1.2 * sd(x) *
                                                    length(x)^(-1/5)), l = 200),
                        plot.cv = FALSE) {
   if ((n <- length(x)) < 2L)
@@ -66,6 +66,8 @@ bw.ucv.mod <- function(x, nb = 1000L,
   #   warning("minimum occurred at one end of the range")
   obj <- sapply(h.grid, function(h) fucv(h))
   h <- h.grid[which.min(obj)]
+  if (h %in% range(h.grid)) 
+    warning("minimum occurred at one end of h.grid")
   if (plot.cv) {
     plot(h.grid, obj, type = "o")
     rug(h.grid)
@@ -77,7 +79,7 @@ bw.ucv.mod <- function(x, nb = 1000L,
 #' @rdname bw.ucv.mod
 #' @export
 bw.bcv.mod <- function(x, nb = 1000L,
-                       h.grid = 10^seq(-2, log10(1.2 * sd(x) *
+                       h.grid = 10^seq(-3, log10(1.2 * sd(x) *
                                                    length(x)^(-1/5)), l = 200),
                        plot.cv = FALSE) {
   if ((n <- length(x)) < 2L)
@@ -101,6 +103,8 @@ bw.bcv.mod <- function(x, nb = 1000L,
   #   warning("minimum occurred at one end of the range")
   obj <- sapply(h.grid, function(h) fbcv(h))
   h <- h.grid[which.min(obj)]
+  if (h %in% range(h.grid)) 
+    warning("minimum occurred at one end of h.grid")
   if (plot.cv) {
     plot(h.grid, obj, type = "o")
     rug(h.grid)
