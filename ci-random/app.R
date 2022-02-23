@@ -1,6 +1,7 @@
+
 #
 # Shiny web application for illustrating the Confidence Interval (CI) for the
-# intercept in the linear model, when the error variance is unkwnown
+# intercept in the linear model, when the error variance is unknown
 #
 
 library(shiny)
@@ -26,7 +27,8 @@ ui <- fluidPage(align = "center",
       actionButton(inputId = "newSample",
                    label = HTML("<h5>Get 100 new<br> samples!</h5>")),
       selectInput(inputId = "alpha", label = "alpha:",
-                  choices = c("0.25", "0.10", "0.05", "0.01"), selected = "0.05"),
+                  choices = c("0.25", "0.10", "0.05", "0.01"),
+                  selected = "0.05"),
       sliderInput(inputId = "beta0", label = "Intercept:",
                   min = -1, max = 1, value = 0, step = 0.25)
 
@@ -104,4 +106,3 @@ server <- function(input, output) {
 
 # Run the application
 shinyApp(ui = ui, server = server)
-

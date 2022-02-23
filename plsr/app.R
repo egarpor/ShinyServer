@@ -1,3 +1,4 @@
+
 #
 # Shiny web application for illustrating the linear regression, principal
 # components analysis, and partial least squares
@@ -115,8 +116,8 @@ server <- function(input, output) {
     arrows(x0 = 0, y0 = 0, x1 = 2 * beta[1], y1 = 2 * beta[2], col = 1, lwd = 4)
 
     # Draw the PC directions
-    arrows(x0 = 0, y0 = 0, x1 = 2 * pls$loadings[1, ], y1 = 2 * pls$loadings[2, ],
-           col = 4, lwd = 4, lty = 1:2)
+    arrows(x0 = 0, y0 = 0, x1 = 2 * pls$loadings[1, ],
+           y1 = 2 * pls$loadings[2, ], col = 4, lwd = 4, lty = 1:2)
 
     # Draw the PLS directions
     arrows(x0 = 0, y0 = 0, x1 = 2 * pc$loadings[1, ], y1 = 2 * pc$loadings[2, ],

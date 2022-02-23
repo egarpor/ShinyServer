@@ -1,3 +1,4 @@
+
 #
 # Shiny web application for illustrating the ANOVA decomposition in 3D and its
 # dependence on the error standard deviation
@@ -6,7 +7,7 @@
 library(shiny)
 library(plot3D)
 
-# Add an alpha value to a colour
+# Add an alpha value to a color
 addAlpha <- function(col, alpha = 1) {
 
   if (missing(col)) stop("Please provide a vector of colours.")
@@ -54,7 +55,8 @@ ui <- fluidPage(align = "center",
 
     inputPanel(
 
-      actionButton(inputId = "newSample", label = HTML("<h5>Get a new<br> sample!</h5>")),
+      actionButton(inputId = "newSample", label =
+                     HTML("<h5>Get a new<br> sample!</h5>")),
       sliderInput(inputId = "sigma", label = "Error standard deviation:",
                   min = 0, max = 3, value = 1, step = 0.1),
       sliderInput(inputId = "theta", label = "Horizontal rotation:",
@@ -120,11 +122,11 @@ server <- function(input, output) {
 
     # Plot data
     gridMat <- scatter3D(data$X, data$Y, data$Z, pch = 16, theta = input$theta,
-                         phi = input$phi, bty = "g", axes = TRUE, colkey = FALSE,
-                         col = 1, xlim = range(gX), ylim = range(gY),
-                         zlim = c(-5, 5), nticks = nGrid, cex = 1,
-                         ticktype = "detailed", xlab = "x1", ylab = "x2",
-                         zlab = "y", type = "n")
+                         phi = input$phi, bty = "g", axes = TRUE,
+                         colkey = FALSE, col = 1, xlim = range(gX),
+                         ylim = range(gY), zlim = c(-5, 5), nticks = nGrid,
+                         cex = 1, ticktype = "detailed", xlab = "x1",
+                         ylab = "x2", zlab = "y", type = "n")
 
     # Segments
     d <- 0.075
@@ -148,9 +150,10 @@ server <- function(input, output) {
            col = addAlpha("red", 0.1), border = addAlpha("red", 0.2), add = TRUE)
 
     # Legend
-    legend("bottomright", legend = expression("Fitted plane", "Sample mean " * bar(Y),
-                                          (Y[i] - bar(Y))^2, (hat(Y)[i] - bar(Y))^2,
-                                          (hat(Y)[i] - Y[i])^2),
+    legend("bottomright", legend =
+             expression("Fitted plane", "Sample mean " * bar(Y),
+                        (Y[i] - bar(Y))^2, (hat(Y)[i] - bar(Y))^2,
+                        (hat(Y)[i] - Y[i])^2),
            col = c(2, 2, 4, "forestgreen", "orange"), lty = c(1, 2, 1, 1, 1),
            lwd = c(2, 1, 3, 3, 3), cex = 1.5)
 
@@ -167,8 +170,8 @@ server <- function(input, output) {
                               phantom(", " * R^2  * " = " * R2),
                             list(sst = sst, ssr = ssr, sse = sse, R2 = R2)),
           col.main = "orange", cex.main = 1.5)
-    title(main = substitute(expr = phantom(sst) * " = " * phantom(ssr) * " + " *
-                              phantom(sse) * ", " * R^2  * " = " * R2,
+    title(main = substitute(expr = phantom(sst) * " = " * phantom(ssr) *
+                              " + " * phantom(sse) * ", " * R^2  * " = " * R2,
                             list(sst = sst, ssr = ssr, sse = sse, R2 = R2)),
           col.main = "black", cex.main = 1.5)
 
@@ -178,5 +181,3 @@ server <- function(input, output) {
 
 # Run the application
 shinyApp(ui = ui, server = server)
-
-

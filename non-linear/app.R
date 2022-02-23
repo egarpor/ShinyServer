@@ -1,3 +1,4 @@
+
 #
 # Shiny web application for illustrating non-linear transformations of the
 # predictor in linear regression
@@ -87,4 +88,3 @@ server <- function(input, output) {
 
 # Run the application
 shinyApp(ui = ui, server = server)
-

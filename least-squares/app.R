@@ -1,3 +1,4 @@
+
 #
 # Shiny web application for illustrating the choice of distances to minimize in
 # linear regression: vertical, horizontal or perpendicular
@@ -79,7 +80,8 @@ server <- function(input, output) {
     plot(x, y, xlim = c(-5, 5), ylim = c(-5, 5), pch = 16)
     segments(x0 = x, y0 = y, x1 = proj[, 1], y1 = proj[, 2], col = red, lty = 2)
     title(main = paste("Sum of squared distances:",
-                       sprintf("%.2f", sum((proj[, 1] - x)^2 + (proj[, 2] - y)^2))),
+                       sprintf("%.2f", sum((proj[, 1] - x)^2 +
+                                             (proj[, 2] - y)^2))),
           cex.main = 1.5)
     abline(a = input$beta0, b = input$beta1, col = 2, lwd = 3)
     points(proj[, 1], proj[, 2], col = 2, pch = 16)
@@ -92,4 +94,3 @@ server <- function(input, output) {
 
 # Run the application
 shinyApp(ui = ui, server = server)
-

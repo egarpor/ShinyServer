@@ -109,7 +109,7 @@ summary(reg)
 
 ### Prediction
 
-Prediction of a new observation can be done via the function `predict`, which also provides conficence intervals. The `newdata` argument of `predict` needs a `data.frame`.
+Prediction of a new observation can be done via the function `predict`, which also provides confidence intervals. The `newdata` argument of `predict` needs a `data.frame`.
 
 ```{r}
 # Point in which we want a prediction for y
@@ -175,5 +175,3 @@ plot(y3 ~ xf, pch = 16)
 lines(0.2 * sin(2 * pi * xf) ~ xf, col = 2)
 abline(reg3, col = 3)
 ```
-
-

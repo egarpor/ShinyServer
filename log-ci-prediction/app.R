@@ -1,3 +1,4 @@
+
 #
 # Shiny web application for illustrating the Confidence Interval (CI) for the
 # mean and response in the logistic model, for different parameters
@@ -30,7 +31,8 @@ ui <- fluidPage(align = "center",
       selectInput(inputId = "n", label = "Sample size:",
                   choices = c(10, 50, 100, 200, 500), selected = 100),
       selectInput(inputId = "alpha", label = "alpha:",
-                  choices = c("0.25", "0.10", "0.05", "0.01"), selected = "0.05"),
+                  choices = c("0.25", "0.10", "0.05", "0.01"),
+                  selected = "0.05"),
       sliderInput(inputId = "sigma2x", label = "Predictor variance:",
                   min = 0.1, max = 3, value = 1, step = 0.1)
 
@@ -92,7 +94,8 @@ server <- function(input, output) {
 
     # Plot
     par(mar = c(4, 4, 1, 1) + 0.1, oma = rep(0, 4))
-    plot(x, y, xlim = c(-5, 5), ylim = c(-0.15, 1), pch = 16, xlab = "x", ylab = "y")
+    plot(x, y, xlim = c(-5, 5), ylim = c(-0.15, 1), pch = 16,
+         xlab = "x", ylab = "y")
     lines(xx, est, col = 2, lwd = 3)
     lines(xx, real, col = 1, lwd = 3)
     segments(x0 = xNew[coarse], y0 = confs$lower[coarse], x1 = xNew[coarse],
@@ -111,4 +114,3 @@ server <- function(input, output) {
 
 # Run the application
 shinyApp(ui = ui, server = server)
-

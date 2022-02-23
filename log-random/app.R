@@ -1,6 +1,7 @@
+
 #
-# Shiny web application for illustrating the influence in the logistic regression
-# of the sample size and predictor variance
+# Shiny web application for illustrating the influence in the logistic
+# regression of the sample size and predictor variance
 #
 
 library(shiny)
@@ -79,7 +80,8 @@ server <- function(input, output) {
 
     # Plot
     par(mar = c(4, 4, 1, 1) + 0.1, oma = rep(0, 4))
-    plot(x, y, xlim = c(-5, 5), ylim = c(-0.15, 1), pch = 16, xlab = "x", ylab = "y")
+    plot(x, y, xlim = c(-5, 5), ylim = c(-0.15, 1), pch = 16,
+         xlab = "x", ylab = "y")
     lines(xx, est, col = 2, lwd = 3)
     lines(xx, real, col = 1, lwd = 3)
     legend("bottomright", legend = c("True regression", "Fitted regression"),
@@ -91,4 +93,3 @@ server <- function(input, output) {
 
 # Run the application
 shinyApp(ui = ui, server = server)
-

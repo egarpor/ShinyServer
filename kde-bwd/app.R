@@ -1,3 +1,4 @@
+
 #
 # Shiny web application for illustrating the construction of the kernel density
 # estimator
@@ -22,12 +23,14 @@ names(choices1x1) <- paste(paste("MW", 1:16, sep = ""),
 names(choices2x2) <- paste("MW", seq(1, 13, by = 4),
                            "-", seq(4, 16, by = 4), sep = "")
 
-#' @title Biased and unbased cross-validation with grid search
+#' @title Biased and unbiased cross-validation with grid search
 #'
-#' @description Cross-validation bandwidth selectors for Gaussian kernels in \code{\link[stats]{density}} with reliable minima.
+#' @description Cross-validation bandwidth selectors for Gaussian kernels in
+#'\code{\link[stats]{density}} with reliable minima.
 #'
 #' @inheritParams bw.ucv
-#' @param h.grid vector for serching the bandwith minimizing the CV loss function.
+#' @param h.grid vector for searching the bandwidth minimizing the CV loss
+#' function.
 #' @param plot.cv flag to indicate the plot of the CV loss function.
 #' @return
 #' A bandwidth on a scale suitable for the \code{bw} argument of \code{density}.
@@ -39,7 +42,8 @@ names(choices2x2) <- paste("MW", seq(1, 13, by = 4),
 #' abline(v = bw.ucv(samp), col = 3)
 #' bw.bcv.mod(x = samp, plot.cv = TRUE)
 #' abline(v = bw.bcv(samp), col = 3)
-#' @author Code modified from \code{\link[stats]{bw.cv}} and \code{\link[stats]{bw.ucv}} by Eduardo García-Portugués (\email{edgarcia@est-econ.uc3m.es}).
+#' @author Code modified from \code{\link[stats]{bw.cv}} and
+#' \code{\link[stats]{bw.ucv}} by Eduardo García-Portugués.
 #' @export
 bw.ucv.mod <- function(x, nb = 1000L,
                        h.grid = 10^seq(-2, log10(1.2 * sd(x) *

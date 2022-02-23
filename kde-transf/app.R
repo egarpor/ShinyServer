@@ -1,3 +1,4 @@
+
 #
 # Shiny web application for illustrating the construction of the transformed
 # kernel density estimator
@@ -70,7 +71,7 @@ server <- function(input, output) {
                                "2" = rlnorm(n = 300, meanlog = 0:1,
                                             sdlog = c(1, 0.5)),
                                "3" = rbeta(n = 300, shape1 = 1, shape2 = 2),
-                               "4" = rbeta(n = 300, shape1 = 1, shape2 = 2:1))
+                               "4" = rbeta(n = 300, shape1 = 1:2, shape2 = 2:1))
   getReactSamp <- eventReactive(input$newSample, getSamp())
 
   output$kdeTransfPlot <- renderPlot({
@@ -94,7 +95,7 @@ server <- function(input, output) {
                       0.5 * dlnorm(x, meanlog = 1, sdlog = 0.5),
                     "3" = function(x) dbeta(x, shape1 = 1, shape2 = 2),
                     "4" = function(x) 0.5 * dbeta(x, shape1 = 1, shape2 = 2) +
-                      0.5 * dbeta(x, shape1 = 2, shape2 = 2))
+                      0.5 * dbeta(x, shape1 = 2, shape2 = 1))
 
     # Set default reactive for the first call
     iTransf <- ifelse(length(input$transf) == 0, "None", input$transf)

@@ -1,3 +1,4 @@
+
 #
 # Shiny web application for illustrating the influence in the regression line of
 # the sample size, error variance and predictor variance
@@ -81,7 +82,8 @@ server <- function(input, output) {
 
     # Plot
     par(mar = c(4, 4, 1, 1) + 0.1, oma = rep(0, 4))
-    plot(x, y, xlim = c(-5, 5), ylim = c(-5, 5), pch = 16, xlab = "x", ylab = "y")
+    plot(x, y, xlim = c(-5, 5), ylim = c(-5, 5), pch = 16,
+         xlab = "x", ylab = "y")
     abline(a = input$beta0, b = input$beta1, col = 1, lwd = 3)
     abline(lm(y ~ x)$coefficients, col = 2, lwd = 3)
     legend("bottomright", legend = c("True regression", "Fitted regression"),
@@ -93,4 +95,3 @@ server <- function(input, output) {
 
 # Run the application
 shinyApp(ui = ui, server = server)
-

@@ -1,3 +1,4 @@
+
 #
 # Shiny web application for illustrating the Confidence Interval (CI) for the
 # mean and response in the linear model, for different parameters
@@ -32,7 +33,8 @@ ui <- fluidPage(align = "center",
       selectInput(inputId = "ciType", label = "CI type:",
                   choices = c("Mean", "Response"), selected = "Mean"),
       selectInput(inputId = "alpha", label = "alpha:",
-                  choices = c("0.25", "0.10", "0.05", "0.01"), selected = "0.05"),
+                  choices = c("0.25", "0.10", "0.05", "0.01"),
+                  selected = "0.05"),
       sliderInput(inputId = "sigma2", label = "Error variance:",
                   min = 0, max = 3, value = 1, step = 0.1),
       sliderInput(inputId = "sigma2x", label = "Predictor variance:",
@@ -94,7 +96,8 @@ server <- function(input, output) {
 
     # Plot
     par(mar = c(4, 4, 1, 1) + 0.1, oma = rep(0, 4))
-    plot(x, y, xlim = c(-5, 5), ylim = c(-5, 5), pch = 16, xlab = "x", ylab = "y")
+    plot(x, y, xlim = c(-5, 5), ylim = c(-5, 5), pch = 16,
+         xlab = "x", ylab = "y")
     abline(a = 0.5, b = 1, col = 1, lwd = 3)
     abline(mod$coefficients, col = 2, lwd = 3)
     segments(x0 = xNew[coarse], y0 = confs[coarse, 2], x1 = xNew[coarse],
@@ -103,8 +106,8 @@ server <- function(input, output) {
     lines(xNew, confs[, 2], col = blue, lty = 2, lwd = 2)
     lines(xNew, confs[, 3], col = blue, lty = 2, lwd = 2)
     legend("bottomright", legend = c("True regression", "Fitted regression",
-                                     ifelse(input$ciType == "Mean", "CI for mean",
-                                            "CI for response")),
+                                     ifelse(input$ciType == "Mean",
+                                            "CI for mean", "CI for response")),
            lwd = 3, col = c(1:2, blue), cex = 1.5)
 
   }, width = 650, height = 650)
@@ -113,4 +116,3 @@ server <- function(input, output) {
 
 # Run the application
 shinyApp(ui = ui, server = server)
-

@@ -1,3 +1,4 @@
+
 #
 # Shiny web application for illustrating the bias and variance of the moving
 # histogram (or naive density estimator)

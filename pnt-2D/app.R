@@ -1,5 +1,5 @@
 
-library(pnt)
+library(pnt) # Not available in CRAN/GitHub
 library(shiny)
 
 # Visualization PC1Curve

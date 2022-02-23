@@ -1,3 +1,4 @@
+
 #
 # Shiny web application for illustrating non-linear transformations of the
 # predictor in logistic regression
@@ -13,8 +14,10 @@ xx <- seq(-6, 6, l = 200)
 logistic <- function(z) 1 / (1 + exp(-z))
 y1 <- rbinom(n = n, prob = logistic(0 + 0.5 * x), size = 1)
 y2 <- rbinom(n = n, prob = logistic(-2 + x + 0.5 * x^2), size = 1)
-y3 <- rbinom(n = n, prob = logistic(-2 + 0.25 * x + 0.5 * (x - 1)^2 + 1 * (x + 1)^3), size = 1)
-y4 <- rbinom(n = n, prob = logistic(-3 + 12 * x - 2 * x^2 - 4 * x^3 + x^4), size = 1)
+y3 <- rbinom(n = n, prob = logistic(-2 + 0.25 * x + 0.5 * (x - 1)^2 +
+                                      1 * (x + 1)^3), size = 1)
+y4 <- rbinom(n = n, prob = logistic(-3 + 12 * x - 2 * x^2 - 4 * x^3 + x^4),
+             size = 1)
 
 # UI for application
 ui <- fluidPage(align = "center",
@@ -72,7 +75,8 @@ server <- function(input, output) {
     plot(x, y, pch = 16, ylim = c(0, 1))
     s <- summary(mod)
     title(main = substitute(expr = "Original. " * R^2 * " = " * R2,
-                            list(R2 = sprintf("%.3f", 1 - s$deviance / s$null.deviance))),
+                            list(R2 = sprintf("%.3f", 1 - s$deviance /
+                                                s$null.deviance))),
           cex.main = 1.25)
     lines(xx, logistic(mod$coefficients[1] + mod$coefficients[2] * xx),
           col = 2, lwd = 3)
@@ -82,7 +86,8 @@ server <- function(input, output) {
                             list(R2 = sprintf("%.3f", 1 - sTransf$deviance /
                                                 sTransf$null.deviance))),
           cex.main = 1.25)
-    lines(xx, logistic(modTransf$coefficients[1] + xxTransf %*% modTransf$coefficients[-1]),
+    lines(xx, logistic(modTransf$coefficients[1] +
+                         xxTransf %*% modTransf$coefficients[-1]),
           col = 2, lwd = 3)
 
   }, width = 650, height = 325)
@@ -91,4 +96,3 @@ server <- function(input, output) {
 
 # Run the application
 shinyApp(ui = ui, server = server)
-

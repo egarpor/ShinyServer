@@ -1,3 +1,4 @@
+
 #
 # Shiny web application for illustrating non-linear transformations of the
 # predictor in multiple regression
@@ -76,9 +77,11 @@ server <- function(input, output) {
           col = 2, lwd = 3)
     plot(x, y, pch = 16)
     title(main = substitute(expr = "Transformation. " * R^2 * " = " * R2,
-                            list(R2 = sprintf("%.3f", summary(modTransf)$r.squared))),
+                            list(R2 = sprintf("%.3f",
+                                              summary(modTransf)$r.squared))),
           cex.main = 1.25)
-    lines(xx, modTransf$coefficients[1] + xxTransf %*% modTransf$coefficients[-1],
+    lines(xx, modTransf$coefficients[1] +
+            xxTransf %*% modTransf$coefficients[-1],
           col = 2, lwd = 3)
 
   }, width = 650, height = 325)
@@ -87,4 +90,3 @@ server <- function(input, output) {
 
 # Run the application
 shinyApp(ui = ui, server = server)
-

@@ -1,3 +1,4 @@
+
 #
 # Shiny web application for illustrating the maximum likelihood estimates in
 # the (simple) logistic regression
@@ -62,7 +63,8 @@ server <- function(input, output) {
     par(mar = c(4, 4, 3, 1) + 0.1, oma = rep(0, 4))
     plot(x, y, xlim = c(-5, 5), ylim = c(-0.1, 1), pch = 16)
     title(main = paste("Log-likelihood:",
-                       sprintf("%.3f", sum(y * log(prob) + (1 - y) * log(1 - prob)))),
+                       sprintf("%.3f", sum(y * log(prob) +
+                                             (1 - y) * log(1 - prob)))),
           cex.main = 1.5)
     lines(xx, real, col = 2, lwd = 3)
     legend("bottomright", legend = c("Fitted regression"), col = 2, lwd = 3,
@@ -74,4 +76,3 @@ server <- function(input, output) {
 
 # Run the application
 shinyApp(ui = ui, server = server)
-

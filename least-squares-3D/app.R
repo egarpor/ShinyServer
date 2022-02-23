@@ -1,3 +1,4 @@
+
 #
 # Shiny web application for illustrating the choice of distances to minimize in
 # linear regression: vertical, horizontal or perpendicular
@@ -9,17 +10,19 @@ library(plot3Drgl)
 
 #' @title Project points into a plane
 #'
-#' @description Projects a matrix of points into the plane defined by $n\cdot x=c$.
+#' @description Projects a matrix of points into the plane defined by
+#' $n\cdot x=c$.
 #'
 #' @param x matrix of points (observations by rows) of dimension \code{c(n, p)}.
-#' @param coefsPlane normal vector $n$ definying the plane. It has length \code{p}.
+#' @param coefsPlane normal vector $n$ defining the plane. It has length
+#' \code{p}.
 #' @param interceptPlane intercept $c$ of the plane.
 #' @return
 #' A matrix of the same size of \code{x} containing the projected points.
 #' @examples
 #' x <- rbind(c(1, 0, 0), c(1, 1, 1))
 #' projPlane(x = x, coefs = c(1, 0, 0), intercept = 0)
-#' @author Eduardo García-Portugués (\email{edgarcia@est-econ.uc3m.es}).
+#' @author Eduardo García-Portugués.
 #' @export
 projPlane = function(x, coefs, intercept) {
 
@@ -33,13 +36,14 @@ projPlane = function(x, coefs, intercept) {
   if (!is.null(dim(x))) {
 
     n <- dim(x)[1]
-    point <- matrix(point, nrow = n, ncol = p, byrow = TRUE) # For proper sum of vector and matrix by rows
-    tt <- (point - x) %*% coefs / sum(coefs ^ 2)
+    point <- matrix(point, nrow = n, ncol = p, byrow = TRUE) # For proper sum
+    # of vector and matrix by rows
+    tt <- (point - x) %*% coefs / sum(coefs^2)
     projx <- x + drop(tt) * matrix(coefs, nrow = n, ncol = p, byrow = TRUE)
 
   } else{
 
-    tt <- coefs %*% (point - x) / sum(coefs ^ 2)
+    tt <- coefs %*% (point - x) / sum(coefs^2)
     projx <-  x + tt * coefs
 
   }
@@ -197,4 +201,3 @@ server <- function(input, output) {
 
 # Run the application
 shinyApp(ui = ui, server = server)
-

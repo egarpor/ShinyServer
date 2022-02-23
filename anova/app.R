@@ -1,3 +1,4 @@
+
 #
 # Shiny web application for illustrating the ANOVA decomposition and its
 # dependence on the error standard deviation
@@ -19,7 +20,8 @@ ui <- fluidPage(align = "center",
 
     inputPanel(
 
-      actionButton(inputId = "newSample", label = HTML("<h5>Get a new<br> sample!</h5>")),
+      actionButton(inputId = "newSample", label =
+                     HTML("<h5>Get a new<br> sample!</h5>")),
       sliderInput(inputId = "sigma", label = "Error standard deviation:",
                   min = 0, max = 3, value = 1, step = 0.1)
 
@@ -79,9 +81,10 @@ server <- function(input, output) {
              col = "orange", lwd = 3)
     abline(mod$coefficients, col = 2, lwd = 3)
     points(x, y, pch = 16, cex = 1.5)
-    legend("topleft", legend = expression("Fitted line", "Sample mean " * bar(Y),
-                                          (Y[i] - bar(Y))^2, (hat(Y)[i] - bar(Y))^2,
-                                          (hat(Y)[i] - Y[i])^2),
+    legend("topleft", legend =
+             expression("Fitted line", "Sample mean " * bar(Y),
+                        (Y[i] - bar(Y))^2, (hat(Y)[i] - bar(Y))^2,
+                        (hat(Y)[i] - Y[i])^2),
            col = c(2, 2, 4, "forestgreen", "orange"), lty = c(1, 2, 1, 1, 1),
            lwd = c(2, 1, 3, 3, 3), cex = 1.5)
 
@@ -107,8 +110,8 @@ server <- function(input, output) {
                               phantom(", " * R^2  * " = " * R2),
                             list(sst = sst, ssr = ssr, sse = sse, R2 = R2)),
           col.main = "orange", cex.main = 1.5)
-    title(main = substitute(expr = phantom(sst) * " = " * phantom(ssr) * " + " *
-                              phantom(sse) * ", " * R^2  * " = " * R2,
+    title(main = substitute(expr = phantom(sst) * " = " * phantom(ssr) *
+                              " + " * phantom(sse) * ", " * R^2  * " = " * R2,
                             list(sst = sst, ssr = ssr, sse = sse, R2 = R2)),
           col.main = "black", cex.main = 1.5)
 
@@ -118,11 +121,3 @@ server <- function(input, output) {
 
 # Run the application
 shinyApp(ui = ui, server = server)
-
-
-
-
-
-
-
-
