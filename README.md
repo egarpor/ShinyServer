@@ -45,8 +45,8 @@ ShinyServer
 To run the applications in this repository, install the following R packages:
 
 ```r
-install.packages(c("shiny", "pls", "mvtnorm", "viridis", "nor1mix",
-                   "rgl", "plot3Drgl", "plot3D", "ks"))
+install.packages(c("shiny", "pls", "mvtnorm", "viridis", "nor1mix", "rgl",
+                   "plot3Drgl", "plot3D", "ks"))
 ```
 
 ## License
