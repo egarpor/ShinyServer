@@ -78,7 +78,8 @@ server <- function(input, output) {
     abline(coef(mod), col = 2, lwd = 3)
     plot(xTransf, y, pch = 16, xlab = input$transfType)
     title(main = substitute(expr = "Transformed predictor. " * R^2 * " = " * R2,
-                            list(R2 = sprintf("%.3f", summary(modTransf)$r.squared))),
+                            list(R2 = sprintf("%.3f",
+                                              summary(modTransf)$r.squared))),
           cex.main = 1.25)
     abline(coef(modTransf), col = 2, lwd = 3)
 

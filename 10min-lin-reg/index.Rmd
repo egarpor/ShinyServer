@@ -143,7 +143,7 @@ y2 <- 1 + 2 * xf + eps2
 reg1 <- lm(y1 ~ xf)
 reg2 <- lm(y2 ~ xf)
 
-# R^2 depends on the
+# R^2 depends on the error variance
 summary(reg1)
 summary(reg2)
 

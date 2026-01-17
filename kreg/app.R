@@ -25,7 +25,7 @@ lGrid <- length(xGrid)
 # UI for application
 ui <- fluidPage(align = "center",
 
-  # Horizontal layout with:
+  # Vertical layout with:
   # - an action button for generating a new sample
   # - a select input for the regression function
   # - a slider input for the bandwidth

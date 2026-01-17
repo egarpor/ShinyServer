@@ -85,8 +85,8 @@ server <- function(input, output) {
              expression("Fitted line", "Sample mean " * bar(Y),
                         (Y[i] - bar(Y))^2, (hat(Y)[i] - bar(Y))^2,
                         (hat(Y)[i] - Y[i])^2),
-           col = c(2, 2, 4, "forestgreen", "orange"), lty = c(1, 2, 1, 1, 1),
-           lwd = c(2, 1, 3, 3, 3), cex = 1.5)
+           col = c(2, 2, 4, "forestgreen", "orange"),
+           lty = c(1, 2, 1, 1, 1), lwd = c(2, 1, 3, 3, 3), cex = 1.5)
 
     # Info for title
     sst <- sum((y - my)^2)

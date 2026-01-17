@@ -120,7 +120,7 @@ bw.bcv.mod <- function(x, nb = 1000L,
 # UI for application
 ui <- fluidPage(align = "center",
 
-    # Horizontal layout with:
+    # Vertical layout with:
     # - an action button for generating a new sample
     # - a select input for the sample size
     # - a radio input for the plots layout

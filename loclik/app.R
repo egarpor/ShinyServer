@@ -28,7 +28,7 @@ getSamp <- function(n, type) {
 # UI for application
 ui <- fluidPage(align = "center",
 
-  # Horizontal layout with:
+  # Vertical layout with:
   # - a select input for the sample size
   # - a select input for the regression function
   # - a slider input for the bandwidth

@@ -147,15 +147,16 @@ server <- function(input, output) {
            col = addAlpha("red", 0), border = addAlpha("red", 0.5), lty = 2,
            add = TRUE)
     surf3D(x = M$x, y = M$y, z = matrix(pred, nrow = lx, ncol = ly),
-           col = addAlpha("red", 0.1), border = addAlpha("red", 0.2), add = TRUE)
+           col = addAlpha("red", 0.1), border = addAlpha("red", 0.2),
+           add = TRUE)
 
     # Legend
     legend("bottomright", legend =
              expression("Fitted plane", "Sample mean " * bar(Y),
                         (Y[i] - bar(Y))^2, (hat(Y)[i] - bar(Y))^2,
                         (hat(Y)[i] - Y[i])^2),
-           col = c(2, 2, 4, "forestgreen", "orange"), lty = c(1, 2, 1, 1, 1),
-           lwd = c(2, 1, 3, 3, 3), cex = 1.5)
+           col = c(2, 2, 4, "forestgreen", "orange"),
+           lty = c(1, 2, 1, 1, 1), lwd = c(2, 1, 3, 3, 3), cex = 1.5)
 
     # Coloured title
     title(main = substitute(expr = sst * phantom(" = " * ssr * " + " * sse) *
