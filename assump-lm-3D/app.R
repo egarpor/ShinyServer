@@ -109,9 +109,6 @@ server <- function(input, output) {
     main <- ifelse(input$assump == "Yes", namesTrue[i], namesFalse[i])
 
     # Select data and caption
-    x1 <- x1T[i, ]
-    x2 <- x2T[i, ]
-    y <- yT[i, ]
     if (input$assump == "Yes") {
 
       x1 <- x1T[i, ]
@@ -139,8 +136,11 @@ server <- function(input, output) {
     ylim <- range(x2)
     zlim <- range(c(y, pred))
 
-    # Open plot
-    persp3Drgl(xx1, xx2, median(pred), xlim = xlim, ylim = ylim, zlim = zlim,
+    # Open plot (create dummy matrix for persp3Drgl initialization)
+    dummyZ <- matrix(median(pred), nrow = 2, ncol = 2)
+    dummyX <- xlim
+    dummyY <- ylim
+    persp3Drgl(dummyX, dummyY, dummyZ, xlim = xlim, ylim = ylim, zlim = zlim,
                xlab = "x1", ylab = "x2", zlab = "y", colkey = FALSE,
                type = "n", ticktype = "detailed", main = main)
 

@@ -24,7 +24,7 @@ library(plot3Drgl)
 #' projPlane(x = x, coefs = c(1, 0, 0), intercept = 0)
 #' @author Eduardo García-Portugués.
 #' @export
-projPlane = function(x, coefs, intercept) {
+projPlane <- function(x, coefs, intercept) {
 
   # Compute a point on the plane (i.e., point %*% coefs = intercept)
   ind <- which.max(abs(coefs))
@@ -41,7 +41,7 @@ projPlane = function(x, coefs, intercept) {
     tt <- (point - x) %*% coefs / sum(coefs^2)
     projx <- x + drop(tt) * matrix(coefs, nrow = n, ncol = p, byrow = TRUE)
 
-  } else{
+  } else {
 
     tt <- coefs %*% (point - x) / sum(coefs^2)
     projx <-  x + tt * coefs
@@ -131,8 +131,11 @@ server <- function(input, output) {
     projPCA <- projPlane(x = cbind(x1, x2, y), coefs = pca$loadings[, 3],
                          intercept = d)
 
-    # Open plot
-    persp3Drgl(x1, x2, median(y), xlim = lim, ylim = lim, zlim = lim,
+    # Open plot (create dummy matrix for persp3Drgl initialization)
+    dummyZ <- matrix(median(y), nrow = 2, ncol = 2)
+    dummyX <- lim
+    dummyY <- lim
+    persp3Drgl(dummyX, dummyY, dummyZ, xlim = lim, ylim = lim, zlim = lim,
                xlab = "x1", ylab = "x2", zlab = "y", colkey = FALSE,
                type = "n", ticktype = "detailed")
 
