@@ -42,7 +42,7 @@ server <- function(input, output) {
   output$msePlot <- renderPlot({
 
     # Sample from a Gamma(a, p) = 1/a * Gamma(1, p)
-    samp <- sampGamma[1:input$n, , input$p %/% 0.25] / input$lambda
+    samp <- sampGamma[1:as.integer(input$n), , input$p %/% 0.25] / input$lambda
 
     # Densities
     FTrue <- pgamma(q = xGrid, shape = input$p, rate = input$lambda)
