@@ -116,12 +116,12 @@ server <- function(input, output) {
     arrows(x0 = 0, y0 = 0, x1 = 2 * beta[1], y1 = 2 * beta[2], col = 1, lwd = 4)
 
     # Draw the PC directions
-    arrows(x0 = 0, y0 = 0, x1 = 2 * pls$loadings[1, ],
-           y1 = 2 * pls$loadings[2, ], col = 4, lwd = 4, lty = 1:2)
-
-    # Draw the PLS directions
     arrows(x0 = 0, y0 = 0, x1 = 2 * pc$loadings[1, ], y1 = 2 * pc$loadings[2, ],
            col = 2, lwd = 4, lty = 1:2)
+
+    # Draw the PLS directions
+    arrows(x0 = 0, y0 = 0, x1 = 2 * pls$loadings[1, ],
+           y1 = 2 * pls$loadings[2, ], col = 4, lwd = 4, lty = 1:2)
 
     # Add legend
     legend("top", legend = expression(beta, "PC1", "PC2", "PLS1", "PLS2"),

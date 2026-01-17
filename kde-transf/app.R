@@ -116,8 +116,7 @@ server <- function(input, output) {
     transf <- switch(iTransf,
                      "None" = function(x) x,
                      "Log" = function(x) log(x),
-                     "Probit" = function(x) qnorm(x),
-                     "Shifted power" = function(x) sqrt(x + m))
+                     "Probit" = function(x) qnorm(x))
     transfInv <- switch(iTransf,
                         "None" = function(x) x,
                         "Log" = function(x) exp(x),
