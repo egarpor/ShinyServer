@@ -40,6 +40,15 @@ ShinyServer
 
 * [A 10 minute-ish introduction to linear regression](https://myshiny.duckdns.org/10min-lin-reg/)
 
+## Required packages
+
+To run the applications in this repository, install the following R packages:
+
+```r
+install.packages(c("shiny", "pls", "mvtnorm", "viridis", "nor1mix",
+                   "rgl", "plot3Drgl", "plot3D", "ks"))
+```
+
 ## License
 
 All the material in this repository is licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/).
