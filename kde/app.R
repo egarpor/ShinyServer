@@ -63,10 +63,14 @@ server <- function(input, output) {
                                "1" = rnorm(n = 200),
                                "2" = rnorMix(n = 200, obj = MW.nm7),
                                "3" = rnorMix(n = 200, obj = MW.nm10))
-  getReactSamp <- eventReactive(input$newSample, getSamp())
 
   # Cache sample based on newSample button and dist
+  # Sample regenerates when either the button is clicked or dist changes
   samp_full <- reactive({
+
+    # Track both button clicks and dist changes
+    input$newSample
+    input$dist
 
     if (values$default == 0) {
 
@@ -75,7 +79,7 @@ server <- function(input, output) {
 
     } else {
 
-      getReactSamp()
+      getSamp()
 
     }
 

@@ -66,16 +66,23 @@ server <- function(input, output) {
   })
 
   # Sampling function
-  getSamp <- function() switch(input$dist,
-                               "1" = rlnorm(n = 300),
-                               "2" = rlnorm(n = 300, meanlog = 0:1,
-                                            sdlog = c(1, 0.5)),
-                               "3" = rbeta(n = 300, shape1 = 1, shape2 = 2),
-                               "4" = rbeta(n = 300, shape1 = 1:2, shape2 = 2:1))
-  getReactSamp <- eventReactive(input$newSample, getSamp())
+  getSamp <- function() {
+
+    switch(input$dist,
+           "1" = rlnorm(n = 300),
+           "2" = rlnorm(n = 300, meanlog = 0:1, sdlog = c(1, 0.5)),
+           "3" = rbeta(n = 300, shape1 = 1, shape2 = 2),
+           "4" = rbeta(n = 300, shape1 = c(1, 3), shape2 = c(3, 1)))
+
+  }
 
   # Cache sample based on newSample button and dist
+  # Sample regenerates when either the button is clicked or dist changes
   samp_full <- reactive({
+
+    # Track both button clicks and dist changes
+    input$newSample
+    input$dist
 
     if (values$default == 0) {
 
@@ -84,9 +91,10 @@ server <- function(input, output) {
 
     } else {
 
-      getReactSamp()
+      getSamp()
 
     }
+
   })
 
   # Cache transformation selection
@@ -177,8 +185,12 @@ server <- function(input, output) {
     h_val <- as.numeric(input$h)
     samp_transf <- samp_transformed()
     kde_val <- kde()
+
+    # Use the same grid as kde() to ensure alignment
     sapply(1:n_val, function(i)
-      density(x = samp_transf[i], bw = h_val, from = -5, to = 5, n = 1024)$y) / n_val
+      density(x = samp_transf[i], bw = h_val,
+              from = min(kde_val$x), to = max(kde_val$x),
+              n = length(kde_val$x))$y) / n_val
 
   })
 
@@ -188,11 +200,24 @@ server <- function(input, output) {
     n_val <- as.integer(input$n)
     h_val <- as.numeric(input$h)
     samp_transf <- samp_transformed()
+    kde_val <- kde()
     kdeTransf_val <- kdeTransf()
+    transfInv_func <- transfInv()
     transfDer_func <- transfDer()
-    sapply(1:n_val, function(i)
-      density(x = samp_transf[i], bw = h_val, from = -4, to = 4, n = 1024)$y) *
-      transfDer_func(kdeTransf_val$x) / n_val
+    # Compute kernel densities on transformed space grid, then transform back
+    # Use the same grid as kde() to ensure alignment
+    sapply(1:n_val, function(i) {
+
+      dens_transf <- density(x = samp_transf[i], bw = h_val,
+                             from = min(kde_val$x), to = max(kde_val$x),
+                             n = length(kde_val$x))$y
+      # Transform x-coordinates back to original space (same as kdeTransf_val$x)
+      x_orig <- transfInv_func(kde_val$x)
+
+      # Multiply by derivative at transformed-back points
+      dens_transf * transfDer_func(x_orig) / n_val
+
+    })
 
   })
 
@@ -216,8 +241,8 @@ server <- function(input, output) {
                     "2" = function(x) 0.5 * dlnorm(x) +
                       0.5 * dlnorm(x, meanlog = 1, sdlog = 0.5),
                     "3" = function(x) dbeta(x, shape1 = 1, shape2 = 2),
-                    "4" = function(x) 0.5 * dbeta(x, shape1 = 1, shape2 = 2) +
-                      0.5 * dbeta(x, shape1 = 2, shape2 = 1))
+                    "4" = function(x) 0.5 * dbeta(x, shape1 = 1, shape2 = 3) +
+                      0.5 * dbeta(x, shape1 = 3, shape2 = 1))
 
     # Plot
     par(mfrow = c(1, 2), mar = c(4, 4, 3, 1) + 0.2, oma = rep(0, 4))

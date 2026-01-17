@@ -34,9 +34,9 @@ ui <- fluidPage(align = "center",
       actionButton(inputId = "newSample",
                    label = HTML("<h5>Get a new<br> sample!</h5>")),
       radioButtons(inputId = "reg", label = "True model:",
-                  choices = c("Constant" = 1, "Linear" = 2,
-                              "Quadratic" = 3, "Non-linear" = 4),
-                  selected = 3, inline = TRUE),
+                   choices = c("Constant" = 1, "Linear" = 2,
+                               "Quadratic" = 3, "Non-linear" = 4),
+                   selected = 3, inline = TRUE),
       sliderInput(inputId = "p", label = "Degree of polynomial fit:",
                   min = 1, max = n - 1, value = 3, step = 1)
 
@@ -65,19 +65,27 @@ server <- function(input, output) {
     X <- rnorm(n = 2 * n)
     e <- rnorm(n = 2 * n, sd = 1)
     Y <- m(X, type = input$reg) + e
-    return(list("X" = X, "Y" = Y))
+    list("X" = X, "Y" = Y)
 
   }
-  getReactSamp <- eventReactive(input$newSample, getSamp())
 
   # Cache sample based on newSample button and reg type
+  # Sample regenerates when either the button is clicked or reg type changes
   samp <- reactive({
 
+    # Track both button clicks and reg type changes
+    input$newSample
+    input$reg
+
     if (values$default == 0) {
+
       set.seed(4244321)
       getSamp()
+
     } else {
-      getReactSamp()
+
+      getSamp()
+
     }
 
   })
@@ -96,7 +104,8 @@ server <- function(input, output) {
 
   })
 
-  # Cache regression model computation (SVD and fits) based on sample, reg, and p
+  # Cache regression model computation (SVD and fits) based on sample, reg,
+  # and p
   regression_model <- reactive({
 
     train <- train_data()

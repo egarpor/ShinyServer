@@ -87,18 +87,18 @@ server <- function(input, output) {
                 "5" = rnorm(n = 200))
     e <- rnorm(n = 200, sd = 0.75)
     Y <- m(X, type = input$reg) + e
-    return(list("X" = X, "Y" = Y))
+    list("X" = X, "Y" = Y)
 
   }
-  getReactSamp <- eventReactive(input$newSample, getSamp())
 
   # Cache sample based on newSample button and reg type
-  # Note: samp depends on input$reg implicitly through getSamp(),
-  # but sample only regenerates when newSample button is clicked
+  # Sample regenerates when either the button is clicked or reg type changes
   samp <- reactive({
 
-    # Depend on input$reg to track changes (though sample only regenerates on button)
+    # Track both button clicks and reg type changes
+    input$newSample
     input$reg
+
     if (values$default == 0) {
 
       set.seed(423432)
@@ -106,7 +106,7 @@ server <- function(input, output) {
 
     } else {
 
-      getReactSamp()
+      getSamp()
 
     }
 
@@ -117,7 +117,7 @@ server <- function(input, output) {
 
     switch(input$kernel,
            "Gaussian" = dnorm,
-           "Rectangular" = function(x) -1 < x & x < 1)
+           "Rectangular" = function(x) 0.5 * (-1 < x & x < 1))
 
   })
 
