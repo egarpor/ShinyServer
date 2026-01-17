@@ -14,7 +14,8 @@ n <- 100
 x <- rnorm(n)
 
 # UI for application
-ui <- fluidPage(align = "center",
+ui <- fluidPage(title = "Coverage of confidence intervals",
+                align = "center",
 
   # Vertical layout with:
   # - the slider inputs for the intercept

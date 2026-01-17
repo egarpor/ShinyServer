@@ -66,7 +66,8 @@ projPlane <- function(x, coefs, intercept) {
 }
 
 # UI for application
-ui <- fluidPage(align = "center",
+ui <- fluidPage(title = "Assumptions of the linear model",
+                align = "center",
 
   # Vertical layout with:
   # - a radio input for choosing whether the assumptions hold or not

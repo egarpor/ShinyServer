@@ -10,7 +10,8 @@ library(shiny)
 load("xData.RData")
 
 # UI for application
-ui <- fluidPage(align = "center",
+ui <- fluidPage(title = "Nonparametric vs parametric estimation",
+                align = "center",
 
   # Vertical layout with:
   # - a radio input for the sample size

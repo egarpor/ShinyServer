@@ -19,7 +19,8 @@ y5 <- -0.5 + 0.005 * exp(x) + 2 * eps
 y6 <- -0.5 + 20 * exp(-x) + 0.5 * eps
 
 # UI for application
-ui <- fluidPage(align = "center",
+ui <- fluidPage(title = "Nonlinear relationships",
+                align = "center",
 
   # Vertical layout with:
   # - the select inputs for the data pattern and type of transformation

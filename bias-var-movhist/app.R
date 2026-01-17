@@ -10,7 +10,8 @@ library(shiny)
 load("xData.RData")
 
 # UI for application
-ui <- fluidPage(align = "center",
+ui <- fluidPage(title = "Bias and variance of the moving histogram",
+                align = "center",
 
   # Vertical layout with:
   # - a select input for the sample size

@@ -11,7 +11,8 @@ n <- 10
 x <- seq(-3, 3, l = n)
 
 # UI for application
-ui <- fluidPage(align = "center",
+ui <- fluidPage(title = "ANOVA decomposition",
+                align = "center",
 
   # Vertical layout with:
   # - action button for generating a new sample

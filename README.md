@@ -8,33 +8,34 @@ ShinyServer
 ### Shiny apps
 
 * Simple linear regression
-	* [Regression coefficients, least squares and distance choice](https://myshiny.duckdns.org/least-squares)
+	* [Least squares and distance choice](https://myshiny.duckdns.org/least-squares)
 	* [Randomness of the regression line](https://myshiny.duckdns.org/lm-random)
-	* [Coverage of the confidence intervals](https://myshiny.duckdns.org/ci-random)
+	* [Coverage of confidence intervals](https://myshiny.duckdns.org/ci-random)
 	* [Confidence intervals for prediction](https://myshiny.duckdns.org/ci-prediction)
 	* [ANOVA decomposition](https://myshiny.duckdns.org/anova)
-	* [Dealing with nonlinear relationships](https://myshiny.duckdns.org/non-linear)
+	* [Nonlinear relationships](https://myshiny.duckdns.org/non-linear)
 * Multiple linear regression
 	* [Least squares and distance choice](https://myshiny.duckdns.org/least-squares-3D)
 	* [Assumptions of the linear model](https://myshiny.duckdns.org/assump-lm-3D)
 	* [ANOVA decomposition](https://myshiny.duckdns.org/anova-3D)
-	* [Dealing with nonlinear relationships](https://myshiny.duckdns.org/mult-non-linear)
-	* [Linear regression, principal component analysis, and partial least squares](https://myshiny.duckdns.org/plsr)
+	* [Nonlinear relationships](https://myshiny.duckdns.org/mult-non-linear)
+	* [Partial least squares and principal component regression](https://myshiny.duckdns.org/plsr)
 * Logistic regression
-	* [Logistic curve and maximum likelihood fit](https://myshiny.duckdns.org/log-maximum-likelihood)
+	* [Logistic curve and maximum likelihood](https://myshiny.duckdns.org/log-maximum-likelihood)
 	* [Randomness of the logistic regression curve](https://myshiny.duckdns.org/log-random)
 	* [Confidence intervals for prediction](https://myshiny.duckdns.org/log-ci-prediction)
-	* [Dealing with nonlinear relationships](https://myshiny.duckdns.org/log-non-linear)
+	* [Nonlinear relationships](https://myshiny.duckdns.org/log-non-linear)
 * Nonparametric density estimation
 	* [Bias and variance of the moving histogram](https://myshiny.duckdns.org/bias-var-movhist/)
-	* [Construction of the kernel density estimator](https://myshiny.duckdns.org/kde/)
+	* [Kernel density estimator](https://myshiny.duckdns.org/kde/)
 	* [Bandwidth selection in kernel density estimation](https://myshiny.duckdns.org/kde-bwd/)
-	* [Transformation of kernel density estimator](https://myshiny.duckdns.org/kde-transf/)
+	* [Transformed kernel density estimator](https://myshiny.duckdns.org/kde-transf/)
 * Nonparametric regression estimation
-	* [Construction of the local polynomial regression estimator](https://myshiny.duckdns.org/kreg/)
-	* [Construction of the local likelihood estimator](https://myshiny.duckdns.org/loclik/)
+	* [Local polynomial regression estimator](https://myshiny.duckdns.org/kreg/)
+	* [Local likelihood estimator](https://myshiny.duckdns.org/loclik/)
 * Other
-	* [An illustration of nonparametric vs parametric estimation](https://myshiny.duckdns.org/dist-mse/)
+	* [Overfitting in regression](https://myshiny.duckdns.org/over-fitting/)
+	* [Nonparametric vs parametric estimation](https://myshiny.duckdns.org/dist-mse/)
 
 ### `Rmd` documents
 

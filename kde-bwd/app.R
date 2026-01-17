@@ -120,7 +120,8 @@ bw.bcv.mod <- function(x, nb = 1000L,
 }
 
 # UI for application
-ui <- fluidPage(align = "center",
+ui <- fluidPage(title = "Bandwidth selection in kernel density estimation",
+                align = "center",
 
   # Vertical layout with:
   # - an action button for generating a new sample

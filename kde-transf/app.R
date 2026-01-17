@@ -7,7 +7,8 @@
 library(shiny)
 
 # UI for application
-ui <- fluidPage(align = "center",
+ui <- fluidPage(title = "Transformed kernel density estimator",
+                align = "center",
 
   # Vertical layout with:
   # - an action button for generating a new sample

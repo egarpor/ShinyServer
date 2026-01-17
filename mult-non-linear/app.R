@@ -18,7 +18,8 @@ y3 <- -2 + 0.25 * x + 0.5 * (x - 1)^2 + 2 * (x + 1)^3 + 10 * eps
 y4 <- -3 + 12 * (x + 1) - 2 * (x + 1)^2 - 4 * (x + 1)^3 + (x + 1)^4 + 10 * eps
 
 # UI for application
-ui <- fluidPage(align = "center",
+ui <- fluidPage(title = "Nonlinear relationships",
+                align = "center",
 
   # Vertical layout with:
   # - the select inputs for the data pattern and type of transformation

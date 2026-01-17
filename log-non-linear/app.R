@@ -20,7 +20,8 @@ y4 <- rbinom(n = n, prob = logistic(-3 + 12 * x - 2 * x^2 - 4 * x^3 + x^4),
              size = 1)
 
 # UI for application
-ui <- fluidPage(align = "center",
+ui <- fluidPage(title = "Nonlinear relationships",
+                align = "center",
 
   # Vertical layout with:
   # - the select inputs for the data pattern and type of transformation

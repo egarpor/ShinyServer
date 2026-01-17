@@ -16,7 +16,8 @@ yExp <- -0.5 + 1.5 * 2^x + eps
 red <- rgb(1, 0, 0, alpha = 0.75)
 
 # UI for application
-ui <- fluidPage(align = "center",
+ui <- fluidPage(title = "Least squares and distance choice",
+                align = "center",
 
   # Vertical layout with:
   # - the select inputs for the data pattern and type of distance

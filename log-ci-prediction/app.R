@@ -15,7 +15,8 @@ coarse <- seq(10, 200, by = 10)
 blue <- rgb(0, 0, 1, alpha = 0.75)
 
 # UI for application
-ui <- fluidPage(align = "center",
+ui <- fluidPage(title = "Confidence intervals for prediction",
+                align = "center",
 
   # Vertical layout with:
   # - action button for generating a new sample

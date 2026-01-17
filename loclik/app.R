@@ -25,7 +25,8 @@ getSamp <- function(n, type) {
 }
 
 # UI for application
-ui <- fluidPage(align = "center",
+ui <- fluidPage(title = "Local likelihood estimator",
+                align = "center",
 
   # Vertical layout with:
   # - a select input for the sample size

@@ -10,7 +10,9 @@ library(mvtnorm)
 library(viridis)
 
 # UI for application
-ui <- fluidPage(align = "center",
+ui <- fluidPage(title = paste("Partial least squares and",
+                              "principal component regression"),
+                align = "center",
 
   # Vertical layout with:
   # - action button for generating a new sample

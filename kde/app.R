@@ -11,7 +11,8 @@ library(nor1mix)
 load("xData.RData")
 
 # UI for application
-ui <- fluidPage(align = "center",
+ui <- fluidPage(title = "Kernel density estimator",
+                align = "center",
 
   # Vertical layout with:
   # - an action button for generating a new sample

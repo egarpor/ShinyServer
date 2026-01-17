@@ -1,6 +1,6 @@
 
 #
-# Shiny web application for illustrating over-fitting in a regression model
+# Shiny web application for illustrating overfitting in a regression model
 #
 
 library(shiny)
@@ -21,7 +21,8 @@ lGrid <- length(xGrid)
 n <- 10
 
 # UI for application
-ui <- fluidPage(align = "center",
+ui <- fluidPage(title = "Overfitting in regression",
+                align = "center",
 
   # Vertical layout with:
   # - an action button for generating a new sample

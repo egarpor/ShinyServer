@@ -23,7 +23,8 @@ mGrid <- cbind(m(xGrid, 1), m(xGrid, 2), m(xGrid, 3), m(xGrid, 4), m(xGrid, 5))
 lGrid <- length(xGrid)
 
 # UI for application
-ui <- fluidPage(align = "center",
+ui <- fluidPage(title = "Local polynomial regression estimator",
+                align = "center",
 
   # Vertical layout with:
   # - an action button for generating a new sample

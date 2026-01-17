@@ -10,7 +10,8 @@ library(shiny)
 load("xData.RData")
 
 # UI for application
-ui <- fluidPage(align = "center",
+ui <- fluidPage(title = "Randomness of the logistic regression curve",
+                align = "center",
 
   # Vertical layout with:
   # - action button for generating a new sample

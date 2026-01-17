@@ -20,7 +20,8 @@ anim <- animationOptions(interval = 300, loop = TRUE, playButton = NULL,
                          pauseButton = NULL)
 
 # UI for application
-ui <- fluidPage(align = "center",
+ui <- fluidPage(title = "PC1Curve visualization",
+                align = "center",
 
   sidebarLayout(
 

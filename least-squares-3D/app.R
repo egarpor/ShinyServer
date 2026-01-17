@@ -67,7 +67,8 @@ names(choices) <- c("vertical (Y)", "horizontal (X1)", "horizontal (X2)",
                     "perpendicular")
 
 # UI for application
-ui <- fluidPage(align = "center",
+ui <- fluidPage(title = "Least squares and distance choice",
+                align = "center",
 
   # Vertical layout with:
   # - the select inputs for the data pattern and type of distance

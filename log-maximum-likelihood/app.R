@@ -17,7 +17,8 @@ y2 <- rbinom(50, size = 1, prob = 1 / (1 + exp(-y2)))
 y3 <- rbinom(50, size = 1, prob = 1 / (1 + exp(-y3)))
 
 # UI for application
-ui <- fluidPage(align = "center",
+ui <- fluidPage(title = "Logistic curve and maximum likelihood",
+                align = "center",
 
   # Vertical layout with:
   # - the select input for the data pattern

@@ -45,7 +45,8 @@ new <- data.frame(X = xy$x, Y = xy$y)
 M <- mesh(x, y)
 
 # UI for application
-ui <- fluidPage(align = "center",
+ui <- fluidPage(title = "ANOVA decomposition",
+                align = "center",
 
   # Vertical layout with:
   # - action button for generating a new sample
