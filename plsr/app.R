@@ -28,7 +28,7 @@ ui <- fluidPage(align = "center",
       sliderInput(inputId = "theta", label = "Direction vector:",
                   min = 0, max = 6.28, value = pi, step = 0.1),
       sliderInput(inputId = "rho", label = "Correlation:",
-                  min = -1, max = 1, value = 0.5, step = 0.01)
+                  min = -0.99, max = 0.99, value = 0.5, step = 0.01)
 
     ),
 
@@ -49,66 +49,105 @@ server <- function(input, output) {
 
   })
 
-  # Error sampling
-  samp <- eventReactive(input$newSample, {
+  # Use eventReactive for button-triggered sample regeneration
+  samp_event <- eventReactive(input$newSample, {
 
     list("x" = rmvnorm(n = 2e3, mean = c(0, 0), sigma = diag(c(1, 1))),
          "eps" = rnorm(n = 2e3))
 
   })
 
-  output$plsPlot <- renderPlot({
+  # Cache sample based on button clicks
+  samp_data <- reactive({
 
-    # Check if the button was clicked
     if (values$default == 0) {
 
       set.seed(123456)
-      x <- rmvnorm(n = 2e3, mean = c(0, 0), sigma = diag(c(1, 1)))
-      eps <- rnorm(n = 2e3)
+      list("x" = rmvnorm(n = 2e3, mean = c(0, 0), sigma = diag(c(1, 1))),
+           "eps" = rnorm(n = 2e3))
 
     } else {
 
-      first <- samp()
-      x <- first$x
-      eps <- first$eps
-
+      samp_event()
     }
 
-    # Simulate (X1, X2) from a N(0, Sigma)
-    # Standard deviations set to 1 since we standardize the data afterwards
-    Sigma <- rbind(c(1, input$rho),
-                   c(input$rho, 1))
+  })
+
+  # Cache correlation matrix square root based on rho
+  sqrtSigma <- reactive({
+
+    rho_val <- input$rho
+    Sigma <- rbind(c(1, rho_val),
+                   c(rho_val, 1))
     eigSigma <- eigen(Sigma, symmetric = TRUE)
-    sqrtSigma <- eigSigma$vectors %*% diag(sqrt(eigSigma$values)) %*%
+    eigSigma$vectors %*% diag(sqrt(eigSigma$values)) %*%
       t(eigSigma$vectors)
-    n <- as.integer(input$n)
-    x <- x[1:n, ] %*% sqrtSigma
 
-    # Center and standardize the sample
-    # x <- scale(x, center = TRUE, scale = TRUE)
+  })
 
-    # Simulate the linear response
+  # Cache transformed sample data based on samp, sqrtSigma, and n
+  x_transformed <- reactive({
+
+    samp_raw <- samp_data()
+    sqrtSigma_val <- sqrtSigma()
+    n_val <- as.integer(input$n)
+    samp_raw$x[1:n_val, ] %*% sqrtSigma_val
+
+  })
+
+  # Cache response based on x, theta, and eps
+  y <- reactive({
+
+    x_val <- x_transformed()
+    n_val <- as.integer(input$n)
+    samp_raw <- samp_data()
     beta <- c(cos(input$theta), sin(input$theta))
-    y <- x %*% beta + eps[1:n]
+    x_val %*% beta + samp_raw$eps[1:n_val]
 
-    # Compute PC directions, avoiding flipping signs (the first loading is
-    # forced to be always positive)
-    pc <- princomp(x, fix_sign = TRUE)
+  })
 
-    # Compute PLS directions
-    pls <- plsr(y ~ x)
+  # Cache PCA results based on x
+  pc <- reactive({
 
-    # Avoid flipping signs by forcing the first loading to be always positive
-    # and changing the scores
-    signs <- sign(pls$loadings[1, ])
-    pls$loadings <- t(t(pls$loadings) * signs)
-    pls$scores <- t(t(pls$scores) * signs)
+    x_val <- x_transformed()
+    princomp(x_val, fix_sign = TRUE)
+
+  })
+
+  # Cache PLS results based on x and y
+  pls_raw <- reactive({
+
+    x_val <- x_transformed()
+    plsr(y() ~ x_val)
+
+  })
+
+  # Cache processed PLS (with sign adjustments)
+  pls <- reactive({
+
+    pls_result <- pls_raw()
+    signs <- sign(pls_result$loadings[1, ])
+    pls_result$loadings <- t(t(pls_result$loadings) * signs)
+    pls_result$scores <- t(t(pls_result$scores) * signs)
+    pls_result
+
+  })
+
+  output$plsPlot <- renderPlot({
+
+    # Get cached values
+    x_val <- x_transformed()
+    y_val <- y()
+    pc_result <- pc()
+    pls_result <- pls()
+    n_val <- as.integer(input$n)
+    beta <- c(cos(input$theta), sin(input$theta))
 
     # Plot the (X1, X2) sample, with color gradient according to the linear
     # trend x %*% beta
-    col <- viridis(n)[rank(x %*% beta)]
+    col <- viridis(n_val)[rank(x_val %*% beta)]
     par(mar = c(4, 4, 3, 1) + 0.1, oma = rep(0, 4))
-    plot(x = x[, 1], y = x[, 2], col = col, pch = 16,
+    plot(x = x_val[, 1], y = x_val[, 2], col = col, pch = 16,
          xlim = c(-4, 4), ylim = c(-4, 4), xlab = "X1", ylab = "X2")
 
     # Draw the beta direction indicating the growth direction of the regression
@@ -117,12 +156,12 @@ server <- function(input, output) {
            col = 1, lwd = 4)
 
     # Draw the PC directions
-    arrows(x0 = 0, y0 = 0, x1 = 2 * pc$loadings[1, ], y1 = 2 * pc$loadings[2, ],
-           col = 2, lwd = 4, lty = 1:2)
+    arrows(x0 = 0, y0 = 0, x1 = 2 * pc_result$loadings[1, ],
+           y1 = 2 * pc_result$loadings[2, ], col = 2, lwd = 4, lty = 1:2)
 
     # Draw the PLS directions
-    arrows(x0 = 0, y0 = 0, x1 = 2 * pls$loadings[1, ],
-           y1 = 2 * pls$loadings[2, ], col = 4, lwd = 4, lty = 1:2)
+    arrows(x0 = 0, y0 = 0, x1 = 2 * pls_result$loadings[1, ],
+           y1 = 2 * pls_result$loadings[2, ], col = 4, lwd = 4, lty = 1:2)
 
     # Add legend
     legend("top", legend = expression(beta, "PC1", "PC2", "PLS1", "PLS2"),

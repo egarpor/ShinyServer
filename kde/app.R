@@ -58,52 +58,89 @@ server <- function(input, output) {
 
   })
 
-  # Sampling
+  # Sampling function
   getSamp <- function() switch(input$dist,
                                "1" = rnorm(n = 200),
                                "2" = rnorMix(n = 200, obj = MW.nm7),
                                "3" = rnorMix(n = 200, obj = MW.nm10))
-  getReactSamp <- eventReactive(input$newSample, getSamp())
 
-  output$kdePlot <- renderPlot({
+  # Cache sample based on newSample button and dist
+  # Sample regenerates when either the button is clicked or dist changes
+  samp_full <- reactive({
 
-    # Check if the button was clicked
+    # Track both button clicks and dist changes
+    input$newSample
+    input$dist
+
     if (values$default == 0) {
 
       set.seed(423432)
-      samp <- getSamp()
+      getSamp()
 
     } else {
 
-      samp <- getReactSamp()
+      getSamp()
 
     }
+
+  })
+
+  # Cache sample subset based on n
+  samp_subset <- reactive({
+
+    n_val <- as.integer(input$n)
+    samp_full()[1:n_val]
+
+  })
+
+  # Cache density estimate based on samp, h, and kernel
+  kde <- reactive({
+
+    samp_val <- samp_subset()
+    h_val <- as.numeric(input$h)
+    kernel_val <- tolower(input$kernel)
+    density(x = samp_val, bw = h_val, from = -4, to = 4, n = 1024,
+            kernel = kernel_val)
+
+  })
+
+  # Cache kernel density matrix for visualization
+  kernel_matrix <- reactive({
+
+    samp_val <- samp_subset()
+    h_val <- as.numeric(input$h)
+    kernel_val <- tolower(input$kernel)
+    n_val <- as.integer(input$n)
+    sapply(1:n_val, function(i) {
+      density(x = samp_val[i], bw = h_val, from = -4, to = 4, n = 1024,
+              kernel = kernel_val)$y
+    }) / n_val
+
+  })
+
+  output$kdePlot <- renderPlot({
+
+    # Get cached values
+    samp_val <- samp_subset()
+    kde_val <- kde()
+    kernel_matrix_val <- kernel_matrix()
+    kernel_val <- tolower(input$kernel)
 
     # True density
     fTrue <- dens[, as.integer(input$dist)]
 
-    # Prepare for plot
-    n <- as.integer(input$n)
-    h <- as.numeric(input$h)
-    kernel <- tolower(input$kernel)
-    samp <- samp[1:n]
-
     # Plot
     par(mar = c(4, 4, 3, 1) + 0.2, oma = rep(0, 4))
-    plot(xGrid, fTrue, type = ifelse(kernel == "rectangular", "s", "l"),
+    plot(xGrid, fTrue, type = ifelse(kernel_val == "rectangular", "s", "l"),
          xlab = "x", ylab = "Density", col = 2, lwd = 3, ylim = c(0, 0.65))
-    kde <- density(x = samp, bw = h, from = -4, to = 4, n = 1024,
-                   kernel = kernel)
-    matlines(kde$x, sapply(1:n, function(i)
-      density(x = samp[i], bw = h, from = -4, to = 4, n = 1024,
-              kernel = kernel)$y) / n, lty = 1, col = "gray",
-      type = ifelse(kernel == "rectangular", "s", "l"))
-    lines(kde, lwd = 2)
+    matlines(kde_val$x, kernel_matrix_val, lty = 1, col = "gray",
+             type = ifelse(kernel_val == "rectangular", "s", "l"))
+    lines(kde_val, lwd = 2)
     legend("topright", legend = c("True density",
                                   "Kernel density estimator",
                                   "Kernels centered at data"),
            col = c(2, 1, "gray"), lwd = 2)
-    rug(samp, col = "gray")
+    rug(samp_val, col = "gray")
 
   }, width = 650, height = 650)
 

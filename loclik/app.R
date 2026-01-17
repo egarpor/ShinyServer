@@ -20,8 +20,7 @@ getSamp <- function(n, type) {
 
   X <- runif(n, -4, 4)
   Y <- rbinom(n = n, size = 1, prob = m(X, type = type))
-
-  return(list("X" = X, "Y" = Y))
+  list("X" = X, "Y" = Y)
 
 }
 
@@ -98,7 +97,7 @@ server <- function(input, output) {
     lines(xGrid, mTrue, lwd = 3, col = 2)
 
     # points(input$x, m(input$x, type = input$reg),
-           # pch = 19, cex = 1.25, col = 2)
+    #        pch = 19, cex = 1.25, col = 2)
 
     # Kernel
     kde <- dnorm(xGrid, mean = input$x, sd = h)
@@ -208,7 +207,8 @@ shinyApp(ui = ui, server = server)
 #          "4" = cos(x)^2,
 #          "5" = logistic(3 * sin(x)))
 # }
-# mGrid <- cbind(m(xGrid, 1), m(xGrid, 2), m(xGrid, 3), m(xGrid, 4), m(xGrid, 5))
+# mGrid <- cbind(m(xGrid, 1), m(xGrid, 2), m(xGrid, 3),
+#                m(xGrid, 4), m(xGrid, 5))
 # lGrid <- length(xGrid)
 #
 # # Samples

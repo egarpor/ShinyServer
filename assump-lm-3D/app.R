@@ -61,8 +61,7 @@ projPlane <- function(x, coefs, intercept) {
     projx <- x + tt * coefs
 
   }
-
-  return(projx)
+  projx
 
 }
 
@@ -185,7 +184,8 @@ shinyApp(ui = ui, server = server)
 #
 # # 3
 # eps <- rnorm(n)
-# x1T[3, ] <- c(rnorm(n/2, mean = -2, sd = 0.75), rnorm(n/2, mean = 2, sd = 0.75))
+# x1T[3, ] <- c(rnorm(n/2, mean = -2, sd = 0.75),
+#               rnorm(n/2, mean = 2, sd = 0.75))
 # x2T[3, ] <- rpois(n, lambda = 4)
 # yT[3, ] <- 1 * x1T[3, ] - 0.5 * x2T[3, ] + eps
 #

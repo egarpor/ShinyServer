@@ -37,7 +37,7 @@ ui <- fluidPage(align = "center",
                   value = 4 * s, step = s, animate = anim, post = "pi"),
       sliderInput(inputId = "y2", label = "v(y2):", min = -1, max = 1,
                   value = 5 * s, step = 2 * s, animate = anim, post = "pi")
-      ),
+    ),
 
     mainPanel(
       plotOutput("plot")
@@ -68,11 +68,13 @@ server <- function(input, output) {
     y <- toPiInt(y)
 
     # Plot
-    plot(y, xlim = c(-pi, pi), ylim = c(-pi, pi), main = paste(
-      "u = (", paste(sprintf("%.2f", u), collapse = ", "), ")\n",
-      "v = (", paste(sprintf("%.2f", v), collapse = ", "), ")",
-      sep = ""), axes = FALSE, xlab = expression(theta[1]),
-      ylab = expression(theta[2]), col = col)
+    plot(y, xlim = c(-pi, pi), ylim = c(-pi, pi),
+         main = paste("u = (",
+                      paste(sprintf("%.2f", u), collapse = ", "), ")\n",
+                      "v = (", paste(sprintf("%.2f", v), collapse = ", "), ")",
+                      sep = ""),
+         axes = FALSE, xlab = expression(theta[1]), ylab = expression(theta[2]),
+         col = col)
     torusAxis()
 
   }, width = 650, height = 650)
