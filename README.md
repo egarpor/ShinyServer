@@ -8,37 +8,37 @@ ShinyServer
 ### Shiny apps
 
 * Simple linear regression
-	* [Regression coefficients, least squares and distance choice](https://shinyserv.es/shiny/least-squares)
-	* [Randomness of the regression line](https://shinyserv.es/shiny/lm-random)
-	* [Coverage of the confidence intervals](https://shinyserv.es/shiny/ci-random)
-	* [Confidence intervals for prediction](https://shinyserv.es/shiny/ci-prediction)
-	* [ANOVA decomposition](https://shinyserv.es/shiny/anova)
-	* [Dealing with nonlinear relationships](https://shinyserv.es/shiny/non-linear)
+	* [Regression coefficients, least squares and distance choice](https://myshiny.duckdns.org/least-squares)
+	* [Randomness of the regression line](https://myshiny.duckdns.org/lm-random)
+	* [Coverage of the confidence intervals](https://myshiny.duckdns.org/ci-random)
+	* [Confidence intervals for prediction](https://myshiny.duckdns.org/ci-prediction)
+	* [ANOVA decomposition](https://myshiny.duckdns.org/anova)
+	* [Dealing with nonlinear relationships](https://myshiny.duckdns.org/non-linear)
 * Multiple linear regression
-	* [Least squares and distance choice](https://shinyserv.es/shiny/least-squares-3D)
-	* [Assumptions of the linear model](https://shinyserv.es/shiny/assump-lm-3D)
-	* [ANOVA decomposition](https://shinyserv.es/shiny/anova-3D)
-	* [Dealing with nonlinear relationships](https://shinyserv.es/shiny/mult-non-linear)
-	* [Linear regression, principal component analysis, and partial least squares](https://shinyserv.es/shiny/plsr)
+	* [Least squares and distance choice](https://myshiny.duckdns.org/least-squares-3D)
+	* [Assumptions of the linear model](https://myshiny.duckdns.org/assump-lm-3D)
+	* [ANOVA decomposition](https://myshiny.duckdns.org/anova-3D)
+	* [Dealing with nonlinear relationships](https://myshiny.duckdns.org/mult-non-linear)
+	* [Linear regression, principal component analysis, and partial least squares](https://myshiny.duckdns.org/plsr)
 * Logistic regression
-	* [Logistic curve and maximum likelihood fit](https://shinyserv.es/shiny/log-maximum-likelihood)
-	* [Randomness of the logistic regression curve](https://shinyserv.es/shiny/log-random)
-	* [Confidence intervals for prediction](https://shinyserv.es/shiny/log-ci-prediction)
-	* [Dealing with nonlinear relationships](https://shinyserv.es/shiny/log-non-linear)
+	* [Logistic curve and maximum likelihood fit](https://myshiny.duckdns.org/log-maximum-likelihood)
+	* [Randomness of the logistic regression curve](https://myshiny.duckdns.org/log-random)
+	* [Confidence intervals for prediction](https://myshiny.duckdns.org/log-ci-prediction)
+	* [Dealing with nonlinear relationships](https://myshiny.duckdns.org/log-non-linear)
 * Nonparametric density estimation
-	* [Bias and variance of the moving histogram](https://shinyserv.es/shiny/bias-var-movhist/)
-	* [Construction of the kernel density estimator](https://shinyserv.es/shiny/kde/)
-	* [Bandwidth selection in kernel density estimation](https://shinyserv.es/shiny/kde-bwd/)
-	* [Transformation of kernel density estimator](https://shinyserv.es/shiny/kde-transf/)
+	* [Bias and variance of the moving histogram](https://myshiny.duckdns.org/bias-var-movhist/)
+	* [Construction of the kernel density estimator](https://myshiny.duckdns.org/kde/)
+	* [Bandwidth selection in kernel density estimation](https://myshiny.duckdns.org/kde-bwd/)
+	* [Transformation of kernel density estimator](https://myshiny.duckdns.org/kde-transf/)
 * Nonparametric regression estimation
-	* [Construction of the local polynomial regression estimator](https://shinyserv.es/shiny/kreg/)
-	* [Construction of the local likelihood estimator](https://shinyserv.es/shiny/loclik/)
+	* [Construction of the local polynomial regression estimator](https://myshiny.duckdns.org/kreg/)
+	* [Construction of the local likelihood estimator](https://myshiny.duckdns.org/loclik/)
 * Other
-	* [An illustration of nonparametric vs parametric estimation](https://shinyserv.es/shiny/dist-mse/)
+	* [An illustration of nonparametric vs parametric estimation](https://myshiny.duckdns.org/dist-mse/)
 
 ### `Rmd` documents
 
-* [A 10 minute-ish introduction to linear regression](https://shinyserv.es/shiny/10min-lin-reg/)
+* [A 10 minute-ish introduction to linear regression](https://myshiny.duckdns.org/10min-lin-reg/)
 
 ## License
 
