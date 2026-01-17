@@ -12,7 +12,7 @@ load("xData.RData")
 # UI for application
 ui <- fluidPage(align = "center",
 
-  # Horizontal layout with:
+  # Vertical layout with:
   # - a select input for the sample size
   # - a radio input for the distribution
   # - a slider input for the bandwidth

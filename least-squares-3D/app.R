@@ -44,7 +44,7 @@ projPlane <- function(x, coefs, intercept) {
   } else {
 
     tt <- coefs %*% (point - x) / sum(coefs^2)
-    projx <-  x + tt * coefs
+    projx <- x + tt * coefs
 
   }
 

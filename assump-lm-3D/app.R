@@ -55,7 +55,7 @@ projPlane <- function(x, coefs, intercept) {
     tt <- (point - x) %*% coefs / sum(coefs^2)
     projx <- x + drop(tt) * matrix(coefs, nrow = n, ncol = p, byrow = TRUE)
 
-  } else{
+  } else {
 
     tt <- coefs %*% (point - x) / sum(coefs^2)
     projx <- x + tt * coefs

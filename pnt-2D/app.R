@@ -1,4 +1,8 @@
 
+#
+# Shiny web application for illustrating PC1Curve visualization
+#
+
 library(pnt) # Not available in CRAN/GitHub
 library(shiny)
 
