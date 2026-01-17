@@ -76,7 +76,7 @@ server <- function(input, output) {
 
   })
 
-  # Sampling
+  # Sampling function
   getSamp <- function() {
 
     X <- switch(input$reg,
@@ -92,58 +92,99 @@ server <- function(input, output) {
   }
   getReactSamp <- eventReactive(input$newSample, getSamp())
 
-  output$kregPlot <- renderPlot({
+  # Cache sample based on newSample button and reg type
+  # Note: samp depends on input$reg implicitly through getSamp(),
+  # but sample only regenerates when newSample button is clicked
+  samp <- reactive({
 
-    # Check if the button was clicked
+    # Depend on input$reg to track changes (though sample only regenerates on button)
+    input$reg
     if (values$default == 0) {
 
       set.seed(423432)
-      samp <- getSamp()
+      getSamp()
 
     } else {
 
-      samp <- getReactSamp()
+      getReactSamp()
 
     }
+
+  })
+
+  # Cache kernel function
+  K <- reactive({
+
+    switch(input$kernel,
+           "Gaussian" = dnorm,
+           "Rectangular" = function(x) -1 < x & x < 1)
+
+  })
+
+  # Cache full local regression matrix based on sample, bandwidth, kernel, and degree
+  reg <- reactive({
+
+    samp_data <- samp()
+    h_val <- as.numeric(input$h)
+    K_func <- K()
+
+    t(sapply(xGrid, function(x) {
+      w <- K_func((samp_data$X - x) / h_val) / h_val
+      X <- cbind(1, samp_data$X - x, (samp_data$X - x)^2, (samp_data$X - x)^3)
+      c(weighted.mean(x = samp_data$Y, w = w),
+        lm.wfit(x = X[, 1:2], y = samp_data$Y, w = w)$coefficients,
+        lm.wfit(x = X[, -4], y = samp_data$Y, w = w)$coefficients,
+        lm.wfit(x = X, y = samp_data$Y, w = w)$coefficients)
+    }))
+
+  })
+
+  # Cache kernel evaluation at evaluation point
+  kde <- reactive({
+
+    samp_data <- samp()
+    h_val <- as.numeric(input$h)
+    K_func <- K()
+    K_func((xGrid - input$x) / h_val) / h_val
+
+  })
+
+  # Cache kernel-based colors for points
+  colKde <- reactive({
+
+    samp_data <- samp()
+    h_val <- as.numeric(input$h)
+    K_func <- K()
+    strength <- K_func((samp_data$X - input$x) / h_val) / h_val
+    gray(level = 1 - pmin(strength, 1))
+
+  })
+
+  output$kregPlot <- renderPlot({
+
+    # Get cached values
+    samp_data <- samp()
+    reg_data <- reg()
+    kde_data <- kde()
+    colKde_data <- colKde()
 
     # True regression
     mTrue <- mGrid[, as.integer(input$reg)]
 
     # Prepare for plot
-    h <- as.numeric(input$h)
     degree <- 0:3 %in% as.integer(input$degree)
-    K <- switch(input$kernel,
-                "Gaussian" = dnorm,
-                "Rectangular" = function(x) -1 < x & x < 1)
-
-    # Color according to density strength
-    strength <- K((samp$X - input$x) / h) / h
-    colKde <- gray(level = 1 - pmin(strength, 1))
 
     # Data and true regression
     par(mar = c(4, 4, 3, 1) + 0.2, oma = rep(0, 4))
-    plot(samp$X, samp$Y, xlab = "x", ylab = "y",
+    plot(samp_data$X, samp_data$Y, xlab = "x", ylab = "y",
          xlim = c(-4, 4), ylim = c(0, 10))
-    points(samp$X, samp$Y, pch = 16, col = colKde)
+    points(samp_data$X, samp_data$Y, pch = 16, col = colKde_data)
     lines(xGrid, mTrue, lwd = 3, col = 2)
     points(input$x, m(input$x, input$reg), pch = 19, cex = 1.25, col = 2)
 
     # Kernel
-    kde <- K((xGrid - input$x) / h) / h
-    lines(xGrid, kde, col = "gray",
+    lines(xGrid, kde_data, col = "gray",
           type = ifelse(input$kernel == "Rectangular", "s", "l"))
-
-    # Compute the local regression estimators
-    reg <- t(sapply(xGrid, function(x) {
-
-      w <- K((samp$X - x) / h) / h
-      X <- cbind(1, samp$X - x, (samp$X - x)^2, (samp$X - x)^3)
-      c(weighted.mean(x = samp$Y, w = w),
-        lm.wfit(x = X[, 1:2], y = samp$Y, w = w)$coefficients,
-        lm.wfit(x = X[, -4], y = samp$Y, w = w)$coefficients,
-        lm.wfit(x = X, y = samp$Y, w = w)$coefficients)
-
-    }))
 
     # Index giving the corresponding point to input$x in xGrid
     xi <- (input$x + 4) / 0.01 + 1
@@ -153,7 +194,7 @@ server <- function(input, output) {
     # and the global regression estimate
     if (degree[1]) {
 
-      reg0 <- reg[xi, 1]
+      reg0 <- reg_data[xi, 1]
       points(input$x, reg0, pch = 19, cex = 1.25, col = rgb(0, 1, 0))
       y <- rep(reg0, lGrid)
 
@@ -161,20 +202,20 @@ server <- function(input, output) {
 
         segments(x0 = xGrid[-lGrid], y0 = y[-lGrid],
                  x1 = xGrid[-1L], y1 = y[-1L],
-                 col = rgb(0, 1, 0, alpha = pmax(kde / max(kde), 0.1)),
+                 col = rgb(0, 1, 0, alpha = pmax(kde_data / max(kde_data), 0.1)),
                  lwd = 2)
 
       }
       if ("Global" %in% input$disp) {
 
-        lines(xGrid, reg[, 1], lwd = 2, col = rgb(0, 1, 0))
+        lines(xGrid, reg_data[, 1], lwd = 2, col = rgb(0, 1, 0))
 
       }
 
     }
     if (degree[2]) {
 
-      reg1 <- reg[xi, 2:3]
+      reg1 <- reg_data[xi, 2:3]
       points(input$x, reg1[1], pch = 19, cex = 1.25, col = rgb(0, 0, 1))
       y <- reg1[1] + reg1[2] * (xGrid - input$x)
 
@@ -182,20 +223,20 @@ server <- function(input, output) {
 
         segments(x0 = xGrid[-lGrid], y0 = y[-lGrid],
                  x1 = xGrid[-1L], y1 = y[-1L],
-                 col = rgb(0, 0, 1, alpha = pmax(kde / max(kde), 0.1)),
+                 col = rgb(0, 0, 1, alpha = pmax(kde_data / max(kde_data), 0.1)),
                  lwd = 2)
 
       }
       if ("Global" %in% input$disp) {
 
-        lines(xGrid, reg[, 2], lwd = 2, col = rgb(0, 0, 1))
+        lines(xGrid, reg_data[, 2], lwd = 2, col = rgb(0, 0, 1))
 
       }
 
     }
     if (degree[3]) {
 
-      reg2 <- reg[xi, 4:6]
+      reg2 <- reg_data[xi, 4:6]
       points(input$x, reg2[1], pch = 19, cex = 1.25,
              col = rgb(0.63, 0.13, 0.94))
       y <- reg2[1] + reg2[2] * (xGrid - input$x) +
@@ -205,20 +246,20 @@ server <- function(input, output) {
 
         segments(x0 = xGrid[-lGrid], y0 = y[-lGrid],
                  x1 = xGrid[-1L], y1 = y[-1L],
-                 col = rgb(0.63, 0.13, 0.94, alpha = pmax(kde / max(kde), 0.1)),
+                 col = rgb(0.63, 0.13, 0.94, alpha = pmax(kde_data / max(kde_data), 0.1)),
                  lwd = 2)
 
       }
       if ("Global" %in% input$disp) {
 
-        lines(xGrid, reg[, 4], lwd = 2, col = rgb(0.63, 0.13, 0.94))
+        lines(xGrid, reg_data[, 4], lwd = 2, col = rgb(0.63, 0.13, 0.94))
 
       }
 
     }
     if (degree[4]) {
 
-      reg3 <- reg[xi, 7:10]
+      reg3 <- reg_data[xi, 7:10]
       points(input$x, reg3[1], pch = 19, cex = 1.25, col = rgb(1, 0.65, 0))
       y <- reg3[1] + reg3[2] * (xGrid - input$x) +
         reg3[3] * (xGrid - input$x)^2 + reg3[4] * (xGrid - input$x)^3
@@ -227,13 +268,13 @@ server <- function(input, output) {
 
         segments(x0 = xGrid[-lGrid], y0 = y[-lGrid],
                  x1 = xGrid[-1L], y1 = y[-1L],
-                 col = rgb(1, 0.65, 0, alpha = pmax(kde / max(kde), 0.1)),
+                 col = rgb(1, 0.65, 0, alpha = pmax(kde_data / max(kde_data), 0.1)),
                  lwd = 2)
 
       }
       if ("Global" %in% input$disp) {
 
-        lines(xGrid, reg[, 7], lwd = 2, col = rgb(1, 0.65, 0))
+        lines(xGrid, reg_data[, 7], lwd = 2, col = rgb(1, 0.65, 0))
 
       }
 
@@ -246,7 +287,7 @@ server <- function(input, output) {
            col = c(2, "gray", rgb(c(0, 0, 0.63, 1), c(1, 0, 0.13, 0.65),
                                   c(0, 1, 0.94, 0))[degree]),
            lwd = 2)
-    rug(samp$X, col = "gray")
+    rug(samp_data$X, col = "gray")
 
   }, width = 650, height = 650)
 

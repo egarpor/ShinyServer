@@ -59,7 +59,7 @@ server <- function(input, output) {
 
   })
 
-  # Sampling
+  # Sampling function
   getSamp <- function() {
 
     X <- rnorm(n = 2 * n)
@@ -70,62 +70,82 @@ server <- function(input, output) {
   }
   getReactSamp <- eventReactive(input$newSample, getSamp())
 
-  output$overfittingPlot <- renderPlot({
+  # Cache sample based on newSample button and reg type
+  samp <- reactive({
 
-    # Check if the button was clicked
     if (values$default == 0) {
-
       set.seed(4244321)
-      samp <- getSamp()
-
+      getSamp()
     } else {
-
-      samp <- getReactSamp()
-
+      getReactSamp()
     }
-    X <- samp$X[1:n]
-    Y <- samp$Y[1:n]
-    XNew <- samp$X[(n + 1):(2 * n)]
-    YNew <- samp$Y[(n + 1):(2 * n)]
 
-    # True regression
-    mTrue <- mGrid[, as.integer(input$reg)]
+  })
 
-    # Model regressions
-    p <- as.integer(input$p)
-    XDesign <- cbind(1, poly(x = X, degree = p, raw = TRUE))
+  # Cache training and test data
+  train_data <- reactive({
+
+    samp_data <- samp()
+    list(X = samp_data$X[1:n], Y = samp_data$Y[1:n])
+
+  })
+  test_data <- reactive({
+
+    samp_data <- samp()
+    list(X = samp_data$X[(n + 1):(2 * n)], Y = samp_data$Y[(n + 1):(2 * n)])
+
+  })
+
+  # Cache regression model computation (SVD and fits) based on sample, reg, and p
+  regression_model <- reactive({
+
+    train <- train_data()
+    test <- test_data()
+    p_val <- as.integer(input$p)
+    XDesign <- cbind(1, poly(x = train$X, degree = p_val, raw = TRUE))
     XDesignInv <- svd(crossprod(XDesign))
-    d <- rep(0, p + 1)
+    d <- rep(0, p_val + 1)
     d[XDesignInv$d > 1e-10] <- 1 / XDesignInv$d[XDesignInv$d > 1e-10]
     XDesignInv <- XDesignInv$v %*% diag(d) %*% t(XDesignInv$u)
-    betaHat <- XDesignInv %*% t(XDesign) %*% Y
-    modGrid <- poly(x = xGrid, degree = p, raw = TRUE) %*% betaHat[-1] +
+    betaHat <- XDesignInv %*% t(XDesign) %*% train$Y
+    modGrid <- poly(x = xGrid, degree = p_val, raw = TRUE) %*% betaHat[-1] +
       betaHat[1]
-    YHat <- poly(x = X, degree = p, raw = TRUE) %*% betaHat[-1] +
+    YHat <- poly(x = train$X, degree = p_val, raw = TRUE) %*% betaHat[-1] +
       betaHat[1]
-    YHatNew <- poly(x = XNew, degree = p, raw = TRUE) %*% betaHat[-1] +
+    YHatNew <- poly(x = test$X, degree = p_val, raw = TRUE) %*% betaHat[-1] +
       betaHat[1]
+    list(modGrid = modGrid, YHat = YHat, YHatNew = YHatNew)
+
+  })
+
+  output$overfittingPlot <- renderPlot({
+
+    # Get cached values
+    train <- train_data()
+    test <- test_data()
+    model <- regression_model()
+    mTrue <- mGrid[, as.integer(input$reg)]
 
     # Plots
     par(mfrow = c(1, 2), mar = c(4, 4, 3, 1) + 0.1, oma = rep(0, 4))
 
-    plot(X, Y, pch = 16, xlab = "x", ylab = "y", xlim = c(-4, 4),
+    plot(train$X, train$Y, pch = 16, xlab = "x", ylab = "y", xlim = c(-4, 4),
          ylim = c(0, 10))
     title(main = paste("Training error =",
-                       sprintf("%-6.4g", sum((YHat - Y)^2))),
+                       sprintf("%-6.4g", sum((model$YHat - train$Y)^2))),
           family = "mono", cex.main = 1.25)
     lines(xGrid, mTrue, col = 1, lwd = 2)
-    lines(xGrid, modGrid, col = 2, lwd = 2)
-    points(X, YHat, col = 2)
+    lines(xGrid, model$modGrid, col = 2, lwd = 2)
+    points(train$X, model$YHat, col = 2)
 
-    plot(XNew, YNew, pch = 16, xlab = "x", ylab = "y", xlim = c(-4, 4),
+    plot(test$X, test$Y, pch = 16, xlab = "x", ylab = "y", xlim = c(-4, 4),
          ylim = c(0, 10))
     title(main = paste("Predictive error =",
-                       sprintf("%-6.4g", sum((YHatNew - YNew)^2))),
+                       sprintf("%-6.4g", sum((model$YHatNew - test$Y)^2))),
           family = "mono", cex.main = 1.25)
     lines(xGrid, mTrue, col = 1, lwd = 2)
-    lines(xGrid, modGrid, col = 2, lwd = 2)
-    points(XNew, YHatNew, col = 2)
+    lines(xGrid, model$modGrid, col = 2, lwd = 2)
+    points(test$X, model$YHatNew, col = 2)
 
   }, width = 650, height = 325)
 
