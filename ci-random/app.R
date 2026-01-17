@@ -91,13 +91,13 @@ server <- function(input, output) {
                            * " intercept is inside CI: " * m
                            * ". Expected: " * e * ".",
                            env = list(m = M - sum(out), e = M * (1 - a))),
-                           cex.main = 1.5)
+         cex.main = 1.5)
     segments(x0 = 1:M, y0 = confs[, 1], x1 = 1:M, y1 = confs[, 2],
              col = out + 1, lwd = out + 1)
     abline(h = input$beta0, lwd = 2, col = 3)
-    legend("topright", legend = expression("True "*beta[0],
-                                           "CI, "*beta[0]*" inside",
-                                           "CI, "*beta[0]*" outside"),
+    legend("topright", legend = expression("True " * beta[0],
+                                           "CI, " * beta[0] * " inside",
+                                           "CI, " * beta[0] * " outside"),
            lwd = 2, col = c(3, 1, 2), cex = 1.5)
 
   }, width = 650, height = 650)

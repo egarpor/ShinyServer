@@ -14,10 +14,12 @@ Suppose we have a production line where we measured the time (in minutes) requir
 
 ```{r}
 # Production time
-y <- c(175, 189, 344, 88, 114, 338, 271, 173, 284, 277, 337, 58, 146, 277, 123, 227, 63, 337, 146, 68)
+y <- c(175, 189, 344, 88, 114, 338, 271, 173, 284, 277, 337, 58, 146,
+       277, 123, 227, 63, 337, 146, 68)
 
 # Number of units in the order
-x <- c(195, 215, 243, 162, 185, 231, 234, 166, 253, 196, 220, 168, 207, 225, 169, 215, 147, 230, 208, 172)
+x <- c(195, 215, 243, 162, 185, 231, 234, 166, 253, 196, 220, 168, 207,
+       225, 169, 215, 147, 230, 208, 172)
 
 # Data scatterplot (pch = 16 for filled points)
 plot(y ~ x, pch = 16)
@@ -66,7 +68,8 @@ You can try to get a better RSS. Good luck! :)
 inputPanel(
 
   sliderInput("beta0", label = "Intercept:",
-              min = -500, max = 300, value = reg$coefficients[1] + 600, step = 5),
+              min = -500, max = 300,
+              value = reg$coefficients[1] + 600, step = 5),
   sliderInput("beta1", label = "Slope:",
               min = -3, max = 8, value = 0, step = 0.01)
 
@@ -74,29 +77,13 @@ inputPanel(
 
 # Create plot
 renderPlot({
-  plot(y ~ x, main = paste("RSS:", round(sum((input$beta0 + input$beta1 * x - y)^2), 1)), pch = 16, xlim = c(100, 300), ylim = c(0, 400))
+  plot(y ~ x, main =
+         paste("RSS:", round(sum((input$beta0 + input$beta1 * x - y)^2), 1)),
+       pch = 16, xlim = c(100, 300), ylim = c(0, 400))
   abline(a = input$beta0, b = input$beta1, col = 2)
   segments(x0 = x, y0 = y, x1 = x, y1 = input$beta0 + input$beta1 * x)
 })
 ```
-
-```{r, echo = FALSE}
-#
-#  ### Define a line
-#   data_line <- data.frame(
-#     x_rng = c(0, 1),
-#     y_rng = c(reg$coefficients[1], reg$coefficients[1] + reg$coefficients[2])
-#   )
-#
-# p <- ggvis(data.frame("x" = x, "y" = y), x = ~x, y = ~y)
-# layer_points(p) %>%
-# layer_model_predictions(model = "lm", stroke := "red") %>%
-#     layer_paths(x = ~x_rng, y = ~y_rng, stroke := "blue", data = data_line) %>%
-#   scale_numeric("x", domain = c(140, 270), nice = FALSE, clamp = TRUE) %>%
-#   scale_numeric("y", domain = c(0, 400), nice = FALSE, clamp = TRUE)
-#
-```
-
 
 ### Summary of the model
 

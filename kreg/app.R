@@ -121,7 +121,8 @@ server <- function(input, output) {
 
   })
 
-  # Cache full local regression matrix based on sample, bandwidth, kernel, and degree
+  # Cache full local regression matrix based on sample, bandwidth, kernel,
+  # and degree
   reg <- reactive({
 
     samp_data <- samp()
@@ -202,7 +203,8 @@ server <- function(input, output) {
 
         segments(x0 = xGrid[-lGrid], y0 = y[-lGrid],
                  x1 = xGrid[-1L], y1 = y[-1L],
-                 col = rgb(0, 1, 0, alpha = pmax(kde_data / max(kde_data), 0.1)),
+                 col = rgb(0, 1, 0,
+                           alpha = pmax(kde_data / max(kde_data), 0.1)),
                  lwd = 2)
 
       }
@@ -223,7 +225,8 @@ server <- function(input, output) {
 
         segments(x0 = xGrid[-lGrid], y0 = y[-lGrid],
                  x1 = xGrid[-1L], y1 = y[-1L],
-                 col = rgb(0, 0, 1, alpha = pmax(kde_data / max(kde_data), 0.1)),
+                 col = rgb(0, 0, 1,
+                           alpha = pmax(kde_data / max(kde_data), 0.1)),
                  lwd = 2)
 
       }
@@ -246,7 +249,8 @@ server <- function(input, output) {
 
         segments(x0 = xGrid[-lGrid], y0 = y[-lGrid],
                  x1 = xGrid[-1L], y1 = y[-1L],
-                 col = rgb(0.63, 0.13, 0.94, alpha = pmax(kde_data / max(kde_data), 0.1)),
+                 col = rgb(0.63, 0.13, 0.94,
+                           alpha = pmax(kde_data / max(kde_data), 0.1)),
                  lwd = 2)
 
       }
@@ -268,7 +272,8 @@ server <- function(input, output) {
 
         segments(x0 = xGrid[-lGrid], y0 = y[-lGrid],
                  x1 = xGrid[-1L], y1 = y[-1L],
-                 col = rgb(1, 0.65, 0, alpha = pmax(kde_data / max(kde_data), 0.1)),
+                 col = rgb(1, 0.65, 0,
+                           alpha = pmax(kde_data / max(kde_data), 0.1)),
                  lwd = 2)
 
       }

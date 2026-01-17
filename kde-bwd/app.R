@@ -47,7 +47,8 @@ names(choices2x2) <- paste("MW", seq(1, 13, by = 4),
 #' @export
 bw.ucv.mod <- function(x, nb = 1000L,
                        h.grid = 10^seq(-2, log10(1.2 * sd(x) *
-                                                   length(x)^(-1/5)), l = 200),
+                                                   length(x)^(-1 / 5)),
+                                       l = 200),
                        plot.cv = FALSE) {
   if ((n <- length(x)) < 2L)
     stop("need at least 2 data points")
@@ -60,7 +61,7 @@ bw.ucv.mod <- function(x, nb = 1000L,
   if (is.na(nb) || nb <= 0L)
     stop("invalid 'nb'")
   storage.mode(x) <- "double"
-  hmax <- 1.144 * sqrt(var(x)) * n^(-1/5)
+  hmax <- 1.144 * sqrt(var(x)) * n^(-1 / 5)
   Z <- .Call(stats:::C_bw_den, nb, x)
   d <- Z[[1L]]
   cnt <- Z[[2L]]
@@ -84,7 +85,8 @@ bw.ucv.mod <- function(x, nb = 1000L,
 #' @export
 bw.bcv.mod <- function(x, nb = 1000L,
                        h.grid = 10^seq(-2, log10(1.2 * sd(x) *
-                                                   length(x)^(-1/5)), l = 200),
+                                                   length(x)^(-1 / 5)),
+                                       l = 200),
                        plot.cv = FALSE) {
   if ((n <- length(x)) < 2L)
     stop("need at least 2 data points")
@@ -97,7 +99,7 @@ bw.bcv.mod <- function(x, nb = 1000L,
   if (is.na(nb) || nb <= 0L)
     stop("invalid 'nb'")
   storage.mode(x) <- "double"
-  hmax <- 1.144 * sqrt(var(x)) * n^(-1/5)
+  hmax <- 1.144 * sqrt(var(x)) * n^(-1 / 5)
   Z <- .Call(stats:::C_bw_den, nb, x)
   d <- Z[[1L]]
   cnt <- Z[[2L]]
@@ -120,35 +122,35 @@ bw.bcv.mod <- function(x, nb = 1000L,
 # UI for application
 ui <- fluidPage(align = "center",
 
-    # Vertical layout with:
-    # - an action button for generating a new sample
-    # - a select input for the sample size
-    # - a radio input for the plots layout
-    # - a select input for the distribution
-    # - a dynamic selector
-    # - a checkbox input for the bandwidth
+  # Vertical layout with:
+  # - an action button for generating a new sample
+  # - a select input for the sample size
+  # - a radio input for the plots layout
+  # - a select input for the distribution
+  # - a dynamic selector
+  # - a checkbox input for the bandwidth
 
-    verticalLayout(
+  verticalLayout(
 
-      inputPanel(
+    inputPanel(
 
-        actionButton(inputId = "newSample",
-                     label = HTML("<h5>Get a new<br> sample!</h5>")),
-        selectInput(inputId = "n", label = "Sample size:",
-                    choices = c(50, 100, 250, 500, 1000), selected = 100),
-        radioButtons(inputId = "layout", label = "Layout plots:",
-                     choiceNames = c("1 x 1", "2 x 2"),
-                     choiceValues = 1:2, selected = 1),
-        uiOutput(outputId = "dist"),
-        checkboxGroupInput(inputId = "bwds", label = "Bandwidth selectors:",
-                           choiceNames = bwdSels, choiceValues = 1:4,
-                           selected = 1:4, inline = TRUE)
+      actionButton(inputId = "newSample",
+                   label = HTML("<h5>Get a new<br> sample!</h5>")),
+      selectInput(inputId = "n", label = "Sample size:",
+                  choices = c(50, 100, 250, 500, 1000), selected = 100),
+      radioButtons(inputId = "layout", label = "Layout plots:",
+                   choiceNames = c("1 x 1", "2 x 2"),
+                   choiceValues = 1:2, selected = 1),
+      uiOutput(outputId = "dist"),
+      checkboxGroupInput(inputId = "bwds", label = "Bandwidth selectors:",
+                         choiceNames = bwdSels, choiceValues = 1:4,
+                         selected = 1:4, inline = TRUE)
 
-      ),
+    ),
 
-      plotOutput("kdeBwdPlot")
+    plotOutput("kdeBwdPlot")
 
-    )
+  )
 
 )
 
@@ -164,8 +166,11 @@ server <- function(input, output) {
   })
 
   # Sampling
-  getSamp <- function() sapply(1:16, function(i)
-      rnorMix(n = 1e3, obj = get(paste("MW.nm", i, sep = ""))))
+  getSamp <- function() sapply(1:16, function(i) {
+
+    rnorMix(n = 1e3, obj = get(paste("MW.nm", i, sep = "")))
+
+  })
   getReactSamp <- eventReactive(input$newSample, getSamp())
 
   # Update dist

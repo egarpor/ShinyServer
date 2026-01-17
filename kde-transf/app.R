@@ -56,10 +56,10 @@ server <- function(input, output) {
 
     # Select data and caption
     choices <- switch(input$dist,
-                    "1" = c("Log"),
-                    "2" = c("Log"),
-                    "3" = c("Log", "Probit"),
-                    "4" = c("Log", "Probit"))
+                      "1" = c("Log"),
+                      "2" = c("Log"),
+                      "3" = c("Log", "Probit"),
+                      "4" = c("Log", "Probit"))
     selectInput(inputId = "transf", label = "Transformation:",
                 choices = c("None", choices), selected = "None")
 
@@ -173,7 +173,8 @@ server <- function(input, output) {
     transfDer_func <- transfDer()
     kdeTransf_result <- kde_val
     kdeTransf_result$x <- transfInv_func(kdeTransf_result$x)
-    kdeTransf_result$y <- kdeTransf_result$y * transfDer_func(kdeTransf_result$x)
+    kdeTransf_result$y <- kdeTransf_result$y *
+      transfDer_func(kdeTransf_result$x)
     kdeTransf_result
 
   })
@@ -187,10 +188,11 @@ server <- function(input, output) {
     kde_val <- kde()
 
     # Use the same grid as kde() to ensure alignment
-    sapply(1:n_val, function(i)
+    sapply(1:n_val, function(i) {
       density(x = samp_transf[i], bw = h_val,
               from = min(kde_val$x), to = max(kde_val$x),
-              n = length(kde_val$x))$y) / n_val
+              n = length(kde_val$x))$y
+    }) / n_val
 
   })
 
@@ -248,9 +250,10 @@ server <- function(input, output) {
     par(mfrow = c(1, 2), mar = c(4, 4, 3, 1) + 0.2, oma = rep(0, 4))
 
     # Transformed data
-    plot(transf_func(xGrid_val), fTrue(xGrid_val) / transfDer_func(xGrid_val), type = "l",
-         xlab = "x", ylab = "Density", col = 2, lwd = 3,
-         xlim = range(transf_func(xGrid_val)[(fTrue(xGrid_val) / transfDer_func(xGrid_val)) > 0],
+    plot(transf_func(xGrid_val), fTrue(xGrid_val) / transfDer_func(xGrid_val),
+         type = "l", xlab = "x", ylab = "Density", col = 2, lwd = 3,
+         xlim = range(transf_func(xGrid_val)[(fTrue(xGrid_val) /
+                                                transfDer_func(xGrid_val)) > 0],
                       na.rm = TRUE),
          ylim = c(0, 1.5 * max(fTrue(xGrid_val) / transfDer_func(xGrid_val),
                                na.rm = TRUE)),

@@ -124,16 +124,16 @@ server <- function(input, output) {
     a_val <- as.numeric(input$alpha)
     confs_result <- predict(mod_val, newdata = data.frame(x_val = xNew),
                             level = 1 - a_val, se.fit = TRUE)
-    confs_result$lower <- confs_result$fit + qnorm(p = a_val/2) *
-                            confs_result$se.fit
+    confs_result$lower <- confs_result$fit + qnorm(p = a_val / 2) *
+      confs_result$se.fit
     confs_result$lower <- exp(confs_result$lower) /
-                            (1 + exp(confs_result$lower))
-    confs_result$upper <- confs_result$fit - qnorm(p = a_val/2) *
-                            confs_result$se.fit
+      (1 + exp(confs_result$lower))
+    confs_result$upper <- confs_result$fit - qnorm(p = a_val / 2) *
+      confs_result$se.fit
     confs_result$upper <- exp(confs_result$upper) /
-                            (1 + exp(confs_result$upper))
+      (1 + exp(confs_result$upper))
     confs_result$se.fit <- exp(confs_result$se.fit) /
-                            (1 + exp(confs_result$se.fit))
+      (1 + exp(confs_result$se.fit))
     confs_result
 
   })
@@ -158,7 +158,7 @@ server <- function(input, output) {
     segments(x0 = xNew[coarse], y0 = confs_val$lower[coarse], x1 = xNew[coarse],
              y1 = confs_val$upper[coarse], lwd = 2, col = blue)
     points(xNew[coarse], exp(confs_val$fit[coarse]) /
-                          (1 + exp(confs_val$fit[coarse])),
+             (1 + exp(confs_val$fit[coarse])),
            col = 2, pch = 16)
     lines(xNew, confs_val$lower, col = blue, lty = 2, lwd = 2)
     lines(xNew, confs_val$upper, col = blue, lty = 2, lwd = 2)

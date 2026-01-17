@@ -111,9 +111,10 @@ server <- function(input, output) {
     h_val <- as.numeric(input$h)
     kernel_val <- tolower(input$kernel)
     n_val <- as.integer(input$n)
-    sapply(1:n_val, function(i)
+    sapply(1:n_val, function(i) {
       density(x = samp_val[i], bw = h_val, from = -4, to = 4, n = 1024,
-              kernel = kernel_val)$y) / n_val
+              kernel = kernel_val)$y
+    }) / n_val
 
   })
 

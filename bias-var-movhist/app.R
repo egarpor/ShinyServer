@@ -24,8 +24,8 @@ ui <- fluidPage(align = "center",
       selectInput(inputId = "n", label = "Sample size:",
                   choices = c(50, 100, 250, 500, 1000), selected = 100),
       radioButtons(inputId = "dist", label = "Density:",
-                  choices = c("Normal" = 1, "Mixture" = 2, "Claw" = 3),
-                  selected = 1, inline = TRUE),
+                   choices = c("Normal" = 1, "Mixture" = 2, "Claw" = 3),
+                   selected = 1, inline = TRUE),
       sliderInput(inputId = "h", label = "Bandwidth h:",
                   min = 0.01, max = 2, value = 1, step = 0.01)
 
@@ -67,8 +67,8 @@ server <- function(input, output) {
     lines(xGrid7, fTrue, lwd = 3, col = 2)
     legend("topright",
            legend = c(expression(f(x)),
-                      expression("Expectation of "*hat(f)[N](x,h)),
-                      expression("Asymptotic 95% CI for "*f(x))),
+                      expression("Expectation of " * hat(f)[N](x, h)),
+                      expression("Asymptotic 95% CI for " * f(x))),
            col = c(2, 1, "gray"), lwd = 2)
 
   }, width = 650, height = 650)
