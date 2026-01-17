@@ -17,7 +17,7 @@ alpha <- seq(-pi, pi, l = N)
 col <- rainbow(N)
 s <- 1 / 20
 anim <- animationOptions(interval = 300, loop = TRUE, playButton = NULL,
-                 pauseButton = NULL)
+                         pauseButton = NULL)
 
 # UI for application
 ui <- fluidPage(align = "center",

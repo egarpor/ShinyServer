@@ -113,7 +113,8 @@ server <- function(input, output) {
 
     # Draw the beta direction indicating the growth direction of the regression
     # plane and the direction of the color gradient
-    arrows(x0 = 0, y0 = 0, x1 = 2 * beta[1], y1 = 2 * beta[2], col = 1, lwd = 4)
+    arrows(x0 = 0, y0 = 0, x1 = 2 * beta[1], y1 = 2 * beta[2],
+           col = 1, lwd = 4)
 
     # Draw the PC directions
     arrows(x0 = 0, y0 = 0, x1 = 2 * pc$loadings[1, ], y1 = 2 * pc$loadings[2, ],

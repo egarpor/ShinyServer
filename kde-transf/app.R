@@ -138,26 +138,31 @@ server <- function(input, output) {
     # Transformed data
     plot(transf(xGrid), fTrue(xGrid) / transfDer(xGrid), type = "l",
          xlab = "x", ylab = "Density", col = 2, lwd = 3,
-         xlim = range(transf(xGrid)[(fTrue(xGrid) / transfDer(xGrid)) > 0],
+         xlim = range(transf(xGrid)[(fTrue(xGrid) /
+                                        transfDer(xGrid)) > 0],
                       na.rm = TRUE),
-         ylim = c(0, 1.5 * max(fTrue(xGrid) / transfDer(xGrid), na.rm = TRUE)),
+         ylim = c(0, 1.5 * max(fTrue(xGrid) / transfDer(xGrid),
+                               na.rm = TRUE)),
          main = "Usual kde for transformed data")
     matlines(kde$x, sapply(1:n, function(i)
-      density(x = transf(samp[i]), bw = h, from = -5, to = 5, n = 1024)$y) / n,
-      lty = 1, col = "gray", type = "l")
+             density(x = transf(samp[i]), bw = h, from = -5, to = 5,
+                     n = 1024)$y) / n,
+             lty = 1, col = "gray", type = "l")
     lines(kde, lwd = 2)
     legend("topright", legend = c("True density", "Kde", "Kernels"),
            col = c(2, 1, "gray"), lwd = 2)
     rug(transf(samp), col = "gray")
 
     # Original data and transformed estimator
-    plot(xGrid, fTrue(xGrid), type = "l", xlab = "x", ylab = "Density", col = 2,
-         lwd = 3, xlim = range(xGrid[fTrue(xGrid) > 1e-3], na.rm = TRUE),
+    plot(xGrid, fTrue(xGrid), type = "l", xlab = "x", ylab = "Density",
+         col = 2, lwd = 3,
+         xlim = range(xGrid[fTrue(xGrid) > 1e-3], na.rm = TRUE),
          ylim = c(0, 1.5 * max(fTrue(xGrid), na.rm = TRUE)),
          main = "Transformed kde for original data")
     matlines(kdeTransf$x, sapply(1:n, function(i)
-      density(x = transf(samp[i]), bw = h, from = -4, to = 4, n = 1024)$y) *
-        transfDer(kdeTransf$x) / n, lty = 1, col = "gray", type = "l")
+             density(x = transf(samp[i]), bw = h, from = -4, to = 4,
+                    n = 1024)$y) * transfDer(kdeTransf$x) / n,
+             lty = 1, col = "gray", type = "l")
     lines(kdeTransf$x, kdeTransf$y, lwd = 2)
     legend("topright", legend = c("True density", "Kde", "Kernels"),
            col = c(2, 1, "gray"), lwd = 2)
