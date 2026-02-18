@@ -12,7 +12,6 @@ library(plotly)
 
 ui <- fluidPage(
   align = "center",
-  titlePanel("Simple Linear Model"),
 
   # Input panel (sliders will be centered automatically)
   inputPanel(

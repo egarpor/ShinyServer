@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XCE4LLC91W"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-XCE4LLC91W');
+</script>
+
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.8.26">
 
@@ -85,21 +95,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="shinyserver" class="level1">
 <h1>ShinyServer</h1>
-<!-- Google tag (gtag.js) -->
-<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-XCE4LLC91W"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-XCE4LLC91W');
-</script>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img src="https://img.shields.io/badge/license-CC_BY--NC--ND_4.0-blue.svg" class="img-fluid figure-img"></a></p>
-<figcaption>License</figcaption>
-</figure>
-</div>
+<p><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img src="https://img.shields.io/badge/license-CC_BY--NC--ND_4.0-blue.svg" class="img-fluid"></a></p>
+<p>A served-oriented repository of Shiny apps and <code>Rmd</code> documents for teaching purposes, mainly focused on regression analysis. The apps run on a Shiny server at <a href="https://myshiny.duckdns.org/">myshiny.duckdns.org</a>.</p>
 <section id="list-of-contents" class="level2">
 <h2 class="anchored" data-anchor-id="list-of-contents">List of contents</h2>
 <section id="shiny-apps" class="level3">
@@ -108,6 +105,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Simple linear regression
 <ul>
 <li><a href="https://myshiny.duckdns.org/least-squares">Least squares and distance choice</a></li>
+<li><a href="https://myshiny.duckdns.org/lm-population">Linear model assumptions</a></li>
 <li><a href="https://myshiny.duckdns.org/lm-random">Randomness of the regression line</a></li>
 <li><a href="https://myshiny.duckdns.org/ci-random">Coverage of confidence intervals</a></li>
 <li><a href="https://myshiny.duckdns.org/ci-prediction">Confidence intervals for prediction</a></li>
@@ -159,7 +157,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="required-packages">Required packages</h2>
 <p>To run the applications in this repository, install the following R packages:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"shiny"</span>, <span class="st">"pls"</span>, <span class="st">"mvtnorm"</span>, <span class="st">"viridis"</span>, <span class="st">"nor1mix"</span>, <span class="st">"rgl"</span>,</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"plot3Drgl"</span>, <span class="st">"plot3D"</span>, <span class="st">"ks"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"plot3Drgl"</span>, <span class="st">"plot3D"</span>, <span class="st">"plotly"</span>, <span class="st">"ks"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="license" class="level2">
 <h2 class="anchored" data-anchor-id="license">License</h2>

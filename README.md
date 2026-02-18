@@ -1,17 +1,9 @@
 ShinyServer
 ===========
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XCE4LLC91W"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+[![](https://img.shields.io/badge/license-CC_BY--NC--ND_4.0-blue.svg)](https://creativecommons.org/licenses/by-nc-nd/4.0/)
 
-  gtag('config', 'G-XCE4LLC91W');
-</script>
-
-[![License](https://img.shields.io/badge/license-CC_BY--NC--ND_4.0-blue.svg)](https://creativecommons.org/licenses/by-nc-nd/4.0/)
+A served-oriented repository of Shiny apps and `Rmd` documents for teaching purposes, mainly focused on regression analysis. The apps run on a Shiny server at [myshiny.duckdns.org](https://myshiny.duckdns.org/).
 
 ## List of contents
 
@@ -19,7 +11,7 @@ ShinyServer
 
 * Simple linear regression
 	* [Least squares and distance choice](https://myshiny.duckdns.org/least-squares)
-	* [Simple linear model assumptions](https://myshiny.duckdns.org/lm-population)
+	* [Linear model assumptions](https://myshiny.duckdns.org/lm-population)
 	* [Randomness of the regression line](https://myshiny.duckdns.org/lm-random)
 	* [Coverage of confidence intervals](https://myshiny.duckdns.org/ci-random)
 	* [Confidence intervals for prediction](https://myshiny.duckdns.org/ci-prediction)
