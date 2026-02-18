@@ -19,6 +19,7 @@ ShinyServer
 
 * Simple linear regression
 	* [Least squares and distance choice](https://myshiny.duckdns.org/least-squares)
+	* [Simple linear model assumptions](https://myshiny.duckdns.org/lm-population)
 	* [Randomness of the regression line](https://myshiny.duckdns.org/lm-random)
 	* [Coverage of confidence intervals](https://myshiny.duckdns.org/ci-random)
 	* [Confidence intervals for prediction](https://myshiny.duckdns.org/ci-prediction)
@@ -57,7 +58,7 @@ To run the applications in this repository, install the following R packages:
 
 ```r
 install.packages(c("shiny", "pls", "mvtnorm", "viridis", "nor1mix", "rgl",
-                   "plot3Drgl", "plot3D", "ks"))
+                   "plot3Drgl", "plot3D", "plotly", "ks"))
 ```
 
 ## License
