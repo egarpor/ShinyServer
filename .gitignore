@@ -6,3 +6,7 @@ webshot-apps.R
 pngout
 .Rproj.user
 build_index.sh
+.quarto/
+
+/.quarto/
+**/*.quarto_ipynb

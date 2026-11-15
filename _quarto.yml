@@ -1,0 +1,11 @@
+# Renders README.md (shown on GitHub) to the site's front page index.html.
+# Run `quarto render` in this directory, then commit README.md and index.html.
+project:
+  render:
+    - README.md        # only the front page; never the apps' .Rmd files
+format:
+  html:
+    output-file: index.html
+    pagetitle: "ShinyServer"
+    embed-resources: true      # one self-contained file; no README_files/
+    include-in-header: gtag.html
